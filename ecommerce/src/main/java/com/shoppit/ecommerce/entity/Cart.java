@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Data
 @RequiredArgsConstructor
-@EqualsAndHashCode
 public class Cart {
 
     @Id
@@ -30,4 +29,68 @@ public class Cart {
     private double totalMrpPrice;
     private double discount;
     private String couponCode;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public int getNumberOfItems() {
+        return numberOfItems;
+    }
+
+    public void setNumberOfItems(int numberOfItems) {
+        this.numberOfItems = numberOfItems;
+    }
+
+    public double getTotalSellingPrice() {
+        return totalSellingPrice;
+    }
+
+    public void setTotalSellingPrice(double totalSellingPrice) {
+        this.totalSellingPrice = totalSellingPrice;
+    }
+
+    public double getTotalMrpPrice() {
+        return totalMrpPrice;
+    }
+
+    public void setTotalMrpPrice(double totalMrpPrice) {
+        this.totalMrpPrice = totalMrpPrice;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
+    }
 }

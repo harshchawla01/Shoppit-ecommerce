@@ -1,7 +1,7 @@
 package com.shoppit.ecommerce.entity;
 
 public enum USER_ROLE {
-    ROLE_ADMIN,
-    ROLE_CUSTOMER,
-    ROLE_SELLER
+    client_admin,
+    client_user,
+    client_seller
 }
