@@ -7,7 +7,7 @@ import com.shoppit.ecommerce.entity.User;
 import com.shoppit.ecommerce.entity.order.Order;
 import com.shoppit.ecommerce.entity.order.OrderItem;
 import com.shoppit.ecommerce.entity.order.OrderStatus;
-import com.shoppit.ecommerce.entity.order.PaymentStatus;
+//import com.shoppit.ecommerce.entity.order.PaymentStatus;
 import com.shoppit.ecommerce.exception.OrderException;
 import com.shoppit.ecommerce.repository.AddressRepository;
 import com.shoppit.ecommerce.repository.OrderItemRepository;

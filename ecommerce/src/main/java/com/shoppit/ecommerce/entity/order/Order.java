@@ -34,8 +34,8 @@ public class Order {
     @ManyToOne
     private Address shippingAddress;
 
-    @Embedded
-    private PaymentDetails paymentDetails = new PaymentDetails();
+//    @Embedded
+//    private PaymentDetails paymentDetails = new PaymentDetails();
 
     private double totalMrpPrice;
     private double totalSellingPrice;
@@ -99,13 +99,13 @@ public class Order {
         this.shippingAddress = shippingAddress;
     }
 
-    public PaymentDetails getPaymentDetails() {
-        return paymentDetails;
-    }
-
-    public void setPaymentDetails(PaymentDetails paymentDetails) {
-        this.paymentDetails = paymentDetails;
-    }
+//    public PaymentDetails getPaymentDetails() {
+//        return paymentDetails;
+//    }
+//
+//    public void setPaymentDetails(PaymentDetails paymentDetails) {
+//        this.paymentDetails = paymentDetails;
+//    }
 
     public double getTotalMrpPrice() {
         return totalMrpPrice;

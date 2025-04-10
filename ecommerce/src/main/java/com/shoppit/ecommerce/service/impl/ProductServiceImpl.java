@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -110,8 +112,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> searchProducts(String query) {
-        productRepository.searchProduct(query);
-        return List.of();
+        List<Product> products = productRepository.searchProduct(query);
+        return products;
     }
 
     @Override

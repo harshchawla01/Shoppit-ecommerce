@@ -13,6 +13,7 @@ import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class SellerProductController {
     private SellerService sellerService;
 
 
-    @GetMapping()
+    @PreAuthorize("hasRole('client_seller')")
+    @GetMapping("/product")
     public ResponseEntity<List<Product>> getProductBySellerId(
             @RequestHeader("Authorization") String jwt) throws ProductException, SellerException {
 
@@ -38,7 +40,8 @@ public class SellerProductController {
 
     }
 
-    @PostMapping()
+    @PreAuthorize("hasRole('client_seller')")
+    @PostMapping("/product")
     public ResponseEntity<Product> createProduct(
             @RequestBody CreateProductRequest request,
 
@@ -53,7 +56,8 @@ public class SellerProductController {
 
     }
 
-    @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('client_seller')")
+    @DeleteMapping("/product/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
         try {
             productService.deleteProduct(productId);
@@ -63,6 +67,7 @@ public class SellerProductController {
         }
     }
 
+    @PreAuthorize("hasRole('client_seller')")
     @PatchMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product product) throws ProductException {
             Product updatedProduct = productService.updateProduct(productId, product);

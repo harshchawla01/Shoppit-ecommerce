@@ -1,7 +1,7 @@
-package com.shoppit.ecommerce.exception;
+    package com.shoppit.ecommerce.exception;
 
-public class UserException extends Exception {
-    public UserException(String message) {
-        super(message);
+    public class UserException extends Exception {
+        public UserException(String message) {
+            super(message);
+        }
     }
-}

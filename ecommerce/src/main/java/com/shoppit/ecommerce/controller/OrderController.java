@@ -3,19 +3,17 @@ package com.shoppit.ecommerce.controller;
 import com.shoppit.ecommerce.entity.*;
 import com.shoppit.ecommerce.entity.order.Order;
 import com.shoppit.ecommerce.entity.order.OrderItem;
-import com.shoppit.ecommerce.entity.order.OrderStatus;
 import com.shoppit.ecommerce.exception.OrderException;
 import com.shoppit.ecommerce.exception.SellerException;
 import com.shoppit.ecommerce.exception.UserException;
-import com.shoppit.ecommerce.response.PaymentLinkResponse;
 import com.shoppit.ecommerce.service.CartService;
 import com.shoppit.ecommerce.service.OrderService;
-import com.shoppit.ecommerce.service.SellerService;
 import com.shoppit.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +31,7 @@ public class OrderController {
     @Autowired
     private CartService cartService;
 
-
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping()
     public ResponseEntity<?> createOrderHandler(
             @RequestBody Address shippingAddress,
@@ -49,6 +47,7 @@ public class OrderController {
 
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping("/user")
     public ResponseEntity<List<Order>> usersOrderHistoryHandler(
             @RequestHeader("Authorization")
@@ -59,6 +58,7 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long orderId, @RequestHeader("Authorization")
     String jwt) throws OrderException, UserException {
@@ -68,6 +68,7 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping("/item/{orderItemId}")
     public ResponseEntity<OrderItem> getOrderItemById(
             @PathVariable Long orderItemId, @RequestHeader("Authorization")
@@ -78,6 +79,7 @@ public class OrderController {
         return new ResponseEntity<>(orderItem, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<Order> cancelOrder(
             @PathVariable Long orderId,

@@ -1,4 +1,4 @@
-package com.shoppit.ecommerce.config;
+//package com.shoppit.ecommerce.config;
 //
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.core.convert.converter.Converter;
@@ -70,6 +70,7 @@ package com.shoppit.ecommerce.config;
 //    }
 //}
 
+package com.shoppit.ecommerce.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -138,6 +139,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
         return authorities;
     }
+}
 
 //    private Collection<? extends GrantedAuthority> extractRoles(Jwt jwt) {
 //        Set<GrantedAuthority> authorities = new HashSet<>();
@@ -188,7 +190,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 //
 ////        return authorities;
 //    }
-}
+//}
 
 //package com.shoppit.ecommerce.config;
 //

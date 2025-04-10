@@ -17,6 +17,7 @@ import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -35,6 +36,7 @@ public class CartController {
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping
     public ResponseEntity<Cart> findUserCartHandler(@RequestHeader("Authorization") String jwt) throws UserException {
 
@@ -45,6 +47,7 @@ public class CartController {
         return new ResponseEntity<Cart>(cart, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PutMapping("/add")
     public ResponseEntity<CartItem> addItemToCart(@RequestBody AddItemRequest req,
                                                   @RequestHeader("Authorization") String jwt) throws UserException, ProductException {
@@ -64,6 +67,7 @@ public class CartController {
 
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @DeleteMapping("/item/{cartItemId}")
     public ResponseEntity<ApiResponse>deleteCartItemHandler(
             @PathVariable Long cartItemId,
@@ -79,6 +83,7 @@ public class CartController {
         return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PutMapping("/item/{cartItemId}")
     public ResponseEntity<CartItem>updateCartItemHandler(
             @PathVariable Long cartItemId,

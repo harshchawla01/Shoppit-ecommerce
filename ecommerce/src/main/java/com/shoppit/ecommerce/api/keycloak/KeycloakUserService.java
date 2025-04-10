@@ -1,6 +1,5 @@
 package com.shoppit.ecommerce.api.keycloak;
 
-import com.shoppit.ecommerce.dto.UserRegistrationRecord;
 import com.shoppit.ecommerce.request.SignupRequest;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.resource.UserResource;

@@ -8,6 +8,7 @@ import com.shoppit.ecommerce.service.UserService;
 import com.shoppit.ecommerce.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class WishListController {
     @Autowired
     private ProductService productService;
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping
     public ResponseEntity<Wishlist> getWishlistsByUser(@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
@@ -29,6 +31,7 @@ public class WishListController {
         return ResponseEntity.ok(wishlist);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping("/add-product/{productId}")
     public ResponseEntity<Wishlist> addProductToWishlist(@RequestHeader("Authorization") String jwt, @PathVariable("productId") Long productId) throws Exception {
         Product product = productService.findProductById(productId);

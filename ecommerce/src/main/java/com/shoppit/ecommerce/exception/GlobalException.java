@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
 @ControllerAdvice
 public class GlobalException {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalException.class);
+
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ErrorDetails> UserExceptionHandler(UserException ue, WebRequest req){
 
         ErrorDetails err= new ErrorDetails(ue.getMessage(),req.getDescription(false),LocalDateTime.now()); // The status code given here will reflect in the message
+        log.error("UserException: {}", ue.getMessage(), ue);
 
         return new ResponseEntity<ErrorDetails>(err,HttpStatus.BAD_REQUEST); // The status given here will reflect as the actual status
 
@@ -91,7 +95,7 @@ public class GlobalException {
     public ResponseEntity<ErrorDetails> otherExceptionHandler(Exception e, WebRequest req){
         ErrorDetails error=new ErrorDetails(e.getMessage(),req.getDescription(false),LocalDateTime.now());
 
-        return new ResponseEntity<ErrorDetails>(error,HttpStatus.ACCEPTED);
+        return new ResponseEntity<ErrorDetails>(error,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

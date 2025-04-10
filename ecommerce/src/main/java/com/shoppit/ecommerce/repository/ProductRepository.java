@@ -26,6 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> searchProduct(@Param("query") String query);
 
 
+
     // Custom search query with multiple optional parameters
 //    @Query("SELECT p FROM Product p WHERE " +
 //            "(:title IS NULL OR LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +

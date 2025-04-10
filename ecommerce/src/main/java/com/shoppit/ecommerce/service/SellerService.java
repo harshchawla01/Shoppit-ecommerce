@@ -12,7 +12,9 @@ public interface SellerService {
     Seller createSeller(SignupRequest req) throws SellerException;
     Seller getSellerById(Long id) throws SellerException;
     Seller getSellerByUsername(String email) throws SellerException;
-    List<Seller> getAllSellers(AccountStatus status);
+//    List<Seller> getAllSellers(AccountStatus status);
+    List<Seller> getAllSellers();
+
     Seller updateSeller(Long id, Seller seller) throws SellerException;
     void deleteSeller(Long id) throws SellerException;
 //    Seller verifyEmail(String email, String otp) throws Exception;

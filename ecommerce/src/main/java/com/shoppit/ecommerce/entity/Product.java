@@ -28,10 +28,8 @@ public class Product {
     private int quantity;
     private String color;
 
-    @ElementCollection // separate table with foreign key
+    @ElementCollection(fetch = FetchType.EAGER) // separate table with foreign key
     private List<String> images = new ArrayList<>();
-
-    private int numberOfRatings;
 
     @ManyToOne
     private Category category;
@@ -116,14 +114,6 @@ public class Product {
 
     public void setImages(List<String> images) {
         this.images = images;
-    }
-
-    public int getNumberOfRatings() {
-        return numberOfRatings;
-    }
-
-    public void setNumberOfRatings(int numberOfRatings) {
-        this.numberOfRatings = numberOfRatings;
     }
 
     public Category getCategory() {

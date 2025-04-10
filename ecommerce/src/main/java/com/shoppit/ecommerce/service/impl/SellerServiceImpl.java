@@ -69,13 +69,15 @@ public class SellerServiceImpl implements SellerService {
         if(seller == null) {
             throw new SellerException("Seller not found");
         }
-        return null;
+        return seller;
     }
 
     @Override
-    public List<Seller> getAllSellers(AccountStatus status) {
-        return List.of();
+    public List<Seller> getAllSellers() {
+//        return List.of();
+        return sellerRepository.findAll();
     }
+
 
     @Override
     public Seller updateSeller(Long id, Seller seller) throws SellerException {
