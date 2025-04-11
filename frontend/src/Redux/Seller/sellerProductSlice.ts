@@ -3,7 +3,7 @@ import axios from "axios";
 import { api } from "../../Config/Api";
 import { Product } from "../../types/productTypes";
 
-const API_URL = "/sellers/product";
+const API_URL = "api/sellers/product";
 
 export const fetchSellerProducts = createAsyncThunk<Product[], any>(
   "sellerProduct/fetchSellerProducts",
@@ -59,25 +59,25 @@ export const updateProduct = createAsyncThunk<
   }
 );
 
-export const updateProductStock = createAsyncThunk<any, any>(
-  "sellerProduct/updateProductStock",
-  async (productId, { rejectWithValue }) => {
-    try {
-      const response = await api.patch(
-        `${API_URL}/${productId}/stock`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        }
-      );
-      console.log("product stock updated ", response.data);
-      return response.data;
-    } catch (error: any) {
-      console.log("error ", error);
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+// export const updateProductStock = createAsyncThunk<any, any>(
+//   "sellerProduct/updateProductStock",
+//   async (productId, { rejectWithValue }) => {
+//     try {
+//       const response = await api.patch(
+//         `${API_URL}/${productId}/stock`,
+//         {},
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+//         }
+//       );
+//       console.log("product stock updated ", response.data);
+//       return response.data;
+//     } catch (error: any) {
+//       console.log("error ", error);
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 export const deleteProduct = createAsyncThunk<void, number>(
   "sellerProduct/deleteProduct",
@@ -164,18 +164,18 @@ const sellerProductSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to update product";
       })
-      .addCase(
-        updateProductStock.fulfilled,
-        (state, action: PayloadAction<Product>) => {
-          const index = state.products.findIndex(
-            (product) => product.id === action.payload.id
-          );
-          if (index !== -1) {
-            state.products[index] = action.payload;
-          }
-          state.loading = false;
-        }
-      )
+      // .addCase(
+      //   updateProductStock.fulfilled,
+      //   (state, action: PayloadAction<Product>) => {
+      //     const index = state.products.findIndex(
+      //       (product) => product.id === action.payload.id
+      //     );
+      //     if (index !== -1) {
+      //       state.products[index] = action.payload;
+      //     }
+      //     state.loading = false;
+      //   }
+      // )
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
         state.error = null;

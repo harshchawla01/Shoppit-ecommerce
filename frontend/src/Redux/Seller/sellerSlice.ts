@@ -22,7 +22,7 @@ const initialState: SellerState = {
   profileUpdated:false,
 };
 
-const API_URL = "/sellers";
+const API_URL = "/api/seller";
 
 export const fetchSellerProfile = createAsyncThunk<Seller, any>(
   "sellers/fetchSellerProfile",

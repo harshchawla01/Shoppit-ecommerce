@@ -68,7 +68,7 @@ public class SellerProductController {
     }
 
     @PreAuthorize("hasRole('client_seller')")
-    @PatchMapping("/{productId}")
+    @PatchMapping("/product/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product product) throws ProductException {
             Product updatedProduct = productService.updateProduct(productId, product);
             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);

@@ -592,7 +592,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AddShoppingCart, FavoriteBorder } from "@mui/icons-material";
 import { useTheme, Theme } from "@mui/material/styles";
 import CategorySheet from "./CategorySheet";
-import { useAuth } from "../../../auth/AuthContext"; // Update this path
+import { useAuth } from "../../../auth/AuthContext";
 import { mainCategory } from "../../../data/category/mainCategory";
 import { useNavigate } from "react-router-dom";
 

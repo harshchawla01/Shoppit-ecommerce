@@ -6,16 +6,14 @@ import {
 import { thunk } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import sellerSlice from "./Seller/sellerSlice";
-import sellerAuthenticationSlice from "./Seller/sellerAuthenticationSlice";
 import sellerProductSlice from "./Seller/sellerProductSlice";
 import ProductSlice from "./Customer/ProductSlice";
 import CartSlice from "./Customer/CartSlice";
-// import AuthSlice from "./AuthSlice";
+import AuthSlice from "./Customer/AuthSlice";
 import UserSlice from "./Customer/UserSlice";
 import OrderSlice from "./Customer/OrderSlice";
 import sellerOrderSlice from "./Seller/sellerOrderSlice";
 import WishlistSlice from "./Customer/WishlistSlice";
-import CustomerSlice from "./Customer/Customer/CustomerSlice";
 import AdminSlice from "./Admin/AdminSlice";
 // import { 
 //   FLUSH, 
@@ -27,21 +25,17 @@ import AdminSlice from "./Admin/AdminSlice";
 // } from 'redux-persist';
 
 const rootReducer = combineReducers({
-
-  // common
-  // auth: AuthSlice,
   
   // customer
+  auth: AuthSlice,
   user: UserSlice,
   products: ProductSlice,
   cart: CartSlice,
   orders: OrderSlice,
   wishlist: WishlistSlice,
-  homePage:CustomerSlice,
 
   // seller
   sellers: sellerSlice,
-  sellerAuth: sellerAuthenticationSlice,
   sellerProduct: sellerProductSlice,
   sellerOrder: sellerOrderSlice,
 

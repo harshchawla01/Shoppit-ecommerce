@@ -55,20 +55,6 @@ export const updateOrderStatus = createAsyncThunk<Order,
   }
 );
 
-export const deleteOrder = createAsyncThunk<ApiResponse, { jwt: string, orderId: number }>(
-  'sellerOrders/deleteOrder',
-  async ({ jwt, orderId }, { rejectWithValue }) => {
-    try {
-      const response = await api.delete(`/seller/orders/${orderId}/delete`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
 const sellerOrderSlice = createSlice({
   name: 'sellerOrders',
   initialState,
@@ -99,18 +85,6 @@ const sellerOrderSlice = createSlice({
         }
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(deleteOrder.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteOrder.fulfilled, (state, action) => {
-        state.loading = false;
-        state.orders = state.orders.filter(order => order.id !== action.meta.arg.orderId);
-      })
-      .addCase(deleteOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

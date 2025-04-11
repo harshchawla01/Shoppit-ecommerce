@@ -13,13 +13,18 @@ import AddProductForm from "./seller/pages/Products/AddProductForm";
 import SellersTable from "./admin/pages/sellers/SellersTable";
 import SellerRegistrationForm from "./seller/pages/SellerInfoForm/SellerInfoForm";
 import { fetchProducts } from "./State/fetchProducts";
+import { fetchSellerProfile } from "./State/fetchSellerProfile";
+// import { useAuth } from "./auth/AuthContext";
+import { useAppDispatch } from "./Redux/store";
+// import { useDispatch } from "react-redux";
 
 // import "./index.css";
 
 const App = () => {
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    dispatch(fetchSellerProfile(localStorage.getItem("kc_token")));
+  }, [dispatch]);
 
   return (
     <>
