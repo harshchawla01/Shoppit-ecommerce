@@ -25,7 +25,6 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private String phone;
     private USER_ROLE role = USER_ROLE.client_user;
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Address> addresses = new HashSet<>();
@@ -79,14 +78,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public USER_ROLE getRole() {

@@ -39,5 +39,4 @@ public class WishListController {
         Wishlist updatedWishlist = wishlistService.addProductToWishlist(user, product);
         return ResponseEntity.ok(updatedWishlist);
     }
-
 }

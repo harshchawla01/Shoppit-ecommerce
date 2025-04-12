@@ -15,9 +15,9 @@ public class KeycloakUserRoleApi {
 
 //    @PreAuthorize("hasRole('admin')")
     @PutMapping("/assign-role/user/{userId}")
-    public ResponseEntity<?> assignRole(@PathVariable String userId, @RequestParam String roleName, @RequestParam boolean isClietRole) {
+    public ResponseEntity<?> assignRole(@PathVariable String userId, @RequestParam String roleName, @RequestParam boolean isClientRole) {
 
-        roleService.assignRole(userId, roleName, isClietRole);
+        roleService.assignRole(userId, roleName);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

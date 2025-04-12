@@ -1,5 +1,3 @@
-// src/redux/slices/sellerOrderSlice.ts
-
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Order, OrderStatus } from '../../types/orderTypes';
 import { api } from '../../Config/Api';

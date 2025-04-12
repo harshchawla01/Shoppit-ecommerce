@@ -23,10 +23,10 @@ public class AuthController {
     private KeycloakUserService keycloakUserService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> createUserHandler(@RequestBody SignupRequest req) {
+    public ResponseEntity<String> createUserHandler(@RequestBody SignupRequest req) {
 
         authService.createUser(req);
-        keycloakUserService.createUser(req);
-        return ResponseEntity.ok().build();
+
+        return keycloakUserService.createUser(req); // Itself a response entity, return keycloak's user id
     }
 }

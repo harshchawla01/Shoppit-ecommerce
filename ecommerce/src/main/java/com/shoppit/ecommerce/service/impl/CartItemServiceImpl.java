@@ -38,7 +38,6 @@ public class CartItemServiceImpl implements CartItemService {
             cartItemRepository.delete(cartItem);
         }
         else throw new CartItemException("You can't delete this cart item");
-
     }
 
     @Override

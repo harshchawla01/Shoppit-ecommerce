@@ -1,7 +1,7 @@
 import { Seller } from "./sellerTypes";
 
 export interface Category {
-  id?: number; // Spring uses Long which typically maps to number in TS
+  id?: number;
   name: string;
   categoryId: string;
   parentCategory?: Category;
@@ -9,7 +9,7 @@ export interface Category {
 }
 
 export interface Product {
-  id?: number; // Optional since id is auto-generated
+  id?: number;
   title: string;
   description: string;
   mrpPrice: number;
@@ -17,9 +17,9 @@ export interface Product {
   discountPercent: number;
   quantity: number;
   color: string;
-  images: string[]; // This matches your @ElementCollection of Strings
+  images: string[];
   category?: Category;
   seller?: Seller;
-  createdAt?: string; // LocalDateTime from Java typically comes as ISO string in JSON
+  createdAt?: string;
   sizes: string;
 }

@@ -14,11 +14,11 @@ public class KeycloakSellerRoleApi {
     @Autowired
     private RoleService roleService;
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('client_admin')")
     @PutMapping("/assign-role/seller/{userId}")
-    public ResponseEntity<?> assignRole(@PathVariable String userId, @RequestParam String roleName, @RequestParam boolean isClietRole) {
+    public ResponseEntity<?> assignRole(@PathVariable String userId, @RequestParam String roleName) {
 
-        roleService.assignRole(userId, roleName, isClietRole);
+        roleService.assignRole(userId, roleName);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

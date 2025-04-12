@@ -33,7 +33,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
     }
 
     @Override
-    public ResponseEntity<?> createUser(SignupRequest req) {
+    public ResponseEntity<String> createUser(SignupRequest req) {
         UserRepresentation user=new UserRepresentation();
         user.setEnabled(true);
         user.setUsername(req.getUsername());
@@ -55,26 +55,17 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
 
         Response response = usersResource.create(user);
 
-        if(Objects.equals(201,response.getStatus())){
+        if(Objects.equals(201, response.getStatus())) {
+            // Extract the userId from the location header
+            String locationHeader = response.getHeaderString("Location");
+            String userId = locationHeader.substring(locationHeader.lastIndexOf("/") + 1);
 
-//            List<UserRepresentation> representationList = usersResource.searchByUsername(userRegistrationRecord.username(), true);
-//            if(!CollectionUtils.isEmpty(representationList)){
-//                UserRepresentation userRepresentation1 = representationList.stream().filter(userRepresentation -> Objects.equals(false, userRepresentation.isEmailVerified())).findFirst().orElse(null);
-//                assert userRepresentation1 != null;
-//                emailVerification(userRepresentation1.getId());
-//            }
-            return ResponseEntity.status(201).body(user);
+            return ResponseEntity.status(201).body(userId);
         } else {
-            // Extract error details from response
+            // Your existing error handling code
             String responseBody = response.readEntity(String.class);
-//            log.error("Failed to create user. Status: {}, Body: {}", response.getStatus(), responseBody);
             return ResponseEntity.status(response.getStatus()).body(responseBody);
         }
-
-//        response.readEntity()
-
-//        return ResponseEntity.status(400).body(response);
-
     }
 
     private UsersResource getUsersResource() {

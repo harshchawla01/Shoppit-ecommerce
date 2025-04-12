@@ -63,9 +63,6 @@ public class ProductServiceImpl implements ProductService {
             category3 = categoryRepository.save(newCategory);
         }
 
-
-        int discountPercentage = calculateDiscountPercentage(req.getMrpPrice(), req.getSellingPrice());
-
         Product product = new Product();
         product.setSeller(seller);
         product.setCategory(category3);
@@ -77,18 +74,10 @@ public class ProductServiceImpl implements ProductService {
         product.setImages(req.getImages());
         product.setMrpPrice(req.getMrpPrice());
         product.setSizes(req.getSizes());
+        product.setQuantity(req.getQuantity());
 
 
         return productRepository.save(product);
-    }
-
-    private int calculateDiscountPercentage(int mrpPrice, int sellingPrice) {
-        if(mrpPrice <= 0) {
-            throw new IllegalArgumentException("MrpPrice must be greater than 0");
-        }
-        double discount = mrpPrice - sellingPrice;
-        double discountPercentage = (discount / mrpPrice) * 100;
-        return (int) discountPercentage;
     }
 
     @Override

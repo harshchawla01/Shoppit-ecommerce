@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface KeycloakUserService {
 
-    ResponseEntity<?> createUser(SignupRequest req);
+    ResponseEntity<String> createUser(SignupRequest req);
 
     UserRepresentation getUserById(String id);
 

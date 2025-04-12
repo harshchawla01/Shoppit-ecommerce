@@ -40,9 +40,8 @@ public class SellerController {
             @RequestHeader("Authorization") String jwt, @RequestBody Seller seller) throws Exception {
 
         Seller profile = sellerService.getSellerProfile(jwt);
-        Seller updatedSeller = sellerService.updateSeller(profile.getId(), seller);
+        Seller updatedSeller = sellerService.updateSeller(profile, seller);
         return ResponseEntity.ok(updatedSeller);
-
     }
 
     @PreAuthorize("hasRole('client_seller')")

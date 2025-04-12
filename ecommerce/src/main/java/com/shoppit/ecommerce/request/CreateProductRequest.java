@@ -16,6 +16,15 @@ public class CreateProductRequest {
     private String category2;
     private String category3;
     private String sizes;
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public String getTitle() {
         return title;

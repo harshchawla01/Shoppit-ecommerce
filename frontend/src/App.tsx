@@ -1,159 +1,156 @@
-// // // // // import React, { use, useEffect } from "react";
-// // // // // // import Navbar from "./customer/components/Navbar/Navbar";
-// // // // // import { ThemeProvider } from "@mui/material";
-// // // // // import CustomTheme from "./Theme/CustomTheme";
-// // // // // import Home from "./customer/pages/Home/Home";
-// // // // // import Product from "./customer/pages/Product/Product";
-// // // // // import ProductDetails from "./customer/pages/Product/ProductDetails/ProductDetails";
-// // // // // import Cart from "./customer/pages/Cart/Cart";
-// // // // // import Checkout from "./customer/pages/Checkout/Checkout";
-// // // // // import { Route, Routes, useNavigate } from "react-router-dom";
-// // // // // import Profile from "./customer/pages/Account/Profile";
-// // // // // import AddProductForm from "./seller/pages/Products/AddProductForm";
-// // // // // import SellersTable from "./admin/pages/sellers/SellersTable";
-// // // // // import SellerRegistrationForm from "./seller/pages/SellerInfoForm/SellerInfoForm";
-// // // // // import { fetchProducts } from "./State/fetchProducts";
-// // // // // import { fetchSellerProfile } from "./State/fetchSellerProfile";
-// // // // // // import { useAuth } from "./auth/AuthContext";
-// // // // // import { useAppDispatch, useAppSelector } from "./Redux/store";
-// // // // // import Navbar from "./seller/components/Navbar/Navbar";
-// // // // // import SellerRoutes from "./routes/SellerRoutes";
-// // // // // // import { useDispatch } from "react-redux";
+// // // import React, { useEffect } from "react";
+// // // import { ThemeProvider } from "@mui/material";
+// // // import CustomTheme from "./Theme/CustomTheme";
+// // // import {
+// // //   Routes,
+// // //   Route,
+// // //   useLocation,
+// // //   Navigate,
+// // //   useNavigate,
+// // // } from "react-router-dom";
+// // // import { useAuth } from "./auth/AuthContext";
+// // // import { useAppDispatch } from "./Redux/store";
+// // // import { fetchSellerProfile } from "./Redux/Seller/sellerSlice";
 
-// // // // // // import "./index.css";
+// // // // Import pages
+// // // import Home from "./customer/pages/Home/Home";
+// // // import Product from "./customer/pages/Product/Product";
+// // // import ProductDetails from "./customer/pages/Product/ProductDetails/ProductDetails";
+// // // import Cart from "./customer/pages/Cart/Cart";
+// // // import Checkout from "./customer/pages/Checkout/Checkout";
+// // // import Profile from "./customer/pages/Account/Profile";
+// // // import SellerAccount from "./seller/pages/Account/SellerAccount";
+// // // import AddProductForm from "./seller/pages/Products/AddProductForm";
+// // // import UpdateProductForm from "./seller/pages/Products/UpdateProductForm";
+// // // import Products from "./seller/pages/Products/Products";
+// // // import SignupForm from "./customer/components/auth/SignupForm";
 
-// // // // // const App = () => {
-// // // // //   // const dispatch = useAppDispatch();
-// // // // //   // useEffect(() => {
-// // // // //   //   dispatch(fetchSellerProfile(localStorage.getItem("kc_token")));
-// // // // //   // }, [dispatch]);
+// // // // Import components
+// // // import CustomerNavbar from "./customer/components/Navbar/Navbar";
+// // // import SellerNavbar from "./seller/components/Navbar/Navbar";
+// // // import SellerDrawerList from "./seller/components/SideBar/DrawerList";
+// // // import Wishlist from "./customer/pages/Wishlist/Wishlist";
 
-// // // // //   // const seller = useAppSelector((store) => store.sellers);
-// // // // //   // const navigate = useNavigate();
+// // // const App = () => {
+// // //   const location = useLocation();
+// // //   const navigate = useNavigate();
+// // //   const dispatch = useAppDispatch();
+// // //   const { token, isLoggedIn, isSeller, isCustomer } = useAuth();
 
-// // // // //   // useEffect(() => {
-// // // // //   //   if (seller.profile) navigate("/seller");
-// // // // //   // }, [seller.profile]);
+// // //   // Fetch seller profile if we have a token and user is a seller
+// // //   useEffect(() => {
+// // //     if (token && isSeller) {
+// // //       dispatch(fetchSellerProfile(token));
+// // //     }
+// // //   }, [dispatch, token, isSeller]);
 
-// // // // //   return (
-// // // // //     <>
-// // // // //       <ThemeProvider theme={CustomTheme}>
-// // // // //         <div>
-// // // // //           {/* Navbar from seller */}
-// // // // //           <Navbar />
-// // // // //           <SellerRoutes />
+// // //   // Role-based redirection after login
+// // //   useEffect(() => {
+// // //     // Only execute this logic when login state changes
+// // //     if (isLoggedIn) {
+// // //       const currentPath = location.pathname;
 
-// // // // //           {/* <Navbar /> */}
-// // // // //           {/* <Routes>
-// // // // //             <Route path="/" element={<Home />} />
-// // // // //             <Route path="/products/:category" element={<Product />} />
-// // // // //             <Route
-// // // // //               path="/product-details/:categoryId/:name/:productId"
-// // // // //               element={<ProductDetails />}
-// // // // //             />
-// // // // //             <Route path="/cart" element={<Cart />} />
-// // // // //             <Route path="/checkout" element={<Checkout />} />
-// // // // //             <Route path="/account/*" element={<Profile />} />
-// // // // //             <Route path="/seller/addProduct" element={<AddProductForm />} />
-// // // // //             <Route path="/admin/sellersTable" element={<SellersTable />} />
-// // // // //             <Route
-// // // // //               path="/seller/registration-form"
-// // // // //               element={<SellerRegistrationForm />}
-// // // // //             />
-// // // // //           </Routes> */}
-// // // // //         </div>
-// // // // //       </ThemeProvider>
-// // // // //     </>
-// // // // //   );
-// // // // // };
+// // //       // Handle seller role
+// // //       if (isSeller) {
+// // //         // If at seller path already, ensure content loads properly
+// // //         if (currentPath.startsWith("/seller")) {
+// // //           // If at root seller path, redirect to account
+// // //           if (currentPath === "/seller") {
+// // //             navigate("/seller/account");
+// // //           }
+// // //           // Otherwise, stay on current seller path
+// // //         } else {
+// // //           // If not on seller path but user is seller, redirect to seller account
+// // //           navigate("/seller/account");
+// // //         }
+// // //       }
+// // //       // Handle customer role (if not seller or explicitly customer)
+// // //       else if (isCustomer || !isSeller) {
+// // //         // If on seller path but user is customer, redirect to home
+// // //         if (currentPath.startsWith("/seller")) {
+// // //           navigate("/");
+// // //         }
+// // //         // Otherwise, stay on current customer path
+// // //       }
+// // //     }
+// // //   }, [isLoggedIn, isSeller, isCustomer, location.pathname, navigate]);
 
-// // // // // export default App;
+// // //   // Determine if we're in the seller section
+// // //   const isSellerSection = location.pathname.startsWith("/seller");
 
-// // // // import React, { useEffect } from "react";
-// // // // import { ThemeProvider } from "@mui/material";
-// // // // import CustomTheme from "./Theme/CustomTheme";
-// // // // import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-// // // // import { useAuth } from "./auth/AuthContext";
-// // // // import { useAppDispatch } from "./Redux/store";
-// // // // import { fetchSellerProfile } from "./Redux/Seller/sellerSlice";
+// // //   return (
+// // //     <ThemeProvider theme={CustomTheme}>
+// // //       <div>
+// // //         {/* Show different navbar based on the section we're in */}
+// // //         {isSellerSection ? (
+// // //           <SellerNavbar DrawerList={SellerDrawerList} />
+// // //         ) : (
+// // //           <CustomerNavbar />
+// // //         )}
 
-// // // // // Import pages
-// // // // import Home from "./customer/pages/Home/Home";
-// // // // import Product from "./customer/pages/Product/Product";
-// // // // import ProductDetails from "./customer/pages/Product/ProductDetails/ProductDetails";
-// // // // import Cart from "./customer/pages/Cart/Cart";
-// // // // import Checkout from "./customer/pages/Checkout/Checkout";
-// // // // import Profile from "./customer/pages/Account/Profile";
-// // // // import AddProductForm from "./seller/pages/Products/AddProductForm";
-// // // // import SellersTable from "./admin/pages/sellers/SellersTable";
-// // // // import SellerRegistrationForm from "./seller/pages/SellerInfoForm/SellerInfoForm";
+// // //         <Routes>
+// // //           {/* Add signup route */}
+// // //           <Route path="/signup" element={<SignupForm />} />
 
-// // // // // Import components
-// // // // import CustomerNavbar from "./customer/components/Navbar/Navbar";
-// // // // import SellerNavbar from "./seller/components/Navbar/Navbar";
-// // // // import SellerDrawerList from "./seller/components/SideBar/DrawerList";
+// // //           {/* Seller protected routes */}
+// // //           <Route
+// // //             path="/seller/account"
+// // //             element={isSeller ? <SellerAccount /> : <Navigate to="/" replace />}
+// // //           />
+// // //           <Route
+// // //             path="/seller/add-product"
+// // //             element={
+// // //               isSeller ? <AddProductForm /> : <Navigate to="/" replace />
+// // //             }
+// // //           />
+// // //           <Route
+// // //             path="/seller/products"
+// // //             element={isSeller ? <Products /> : <Navigate to="/" replace />}
+// // //           />
+// // //           <Route
+// // //             path="/seller/update-product/:productId"
+// // //             element={
+// // //               isSeller ? <UpdateProductForm /> : <Navigate to="/" replace />
+// // //             }
+// // //           />
+// // //           {/* Add other seller routes with similar protection */}
 
-// // // // // Import routes
-// // // // import SellerRoutes from "./routes/SellerRoutes";
+// // //           {/* Default seller route redirects to account */}
+// // //           <Route
+// // //             path="/seller"
+// // //             element={<Navigate to="/seller/account" replace />}
+// // //           />
 
-// // // // const App = () => {
-// // // //   const location = useLocation();
-// // // //   const dispatch = useAppDispatch();
-// // // //   const { token, isLoggedIn } = useAuth();
+// // //           {/* Customer routes */}
+// // //           <Route path="/" element={<Home />} />
+// // //           <Route path="/products/:category" element={<Product />} />
+// // //           <Route
+// // //             path="/product-details/:categoryId/:name/:productId"
+// // //             element={<ProductDetails />}
+// // //           />
+// // //           <Route path="/cart" element={<Cart />} />
+// // //           <Route path="/checkout" element={<Checkout />} />
+// // //           {/* <Route path="/account/*" element={<Profile />} /> */}
 
-// // // //   // Fetch seller profile if we have a token
-// // // //   useEffect(() => {
-// // // //     if (token) {
-// // // //       dispatch(fetchSellerProfile(token));
-// // // //     }
-// // // //   }, [dispatch, token]);
+// // //           <Route path="/account/*" element={<Profile />}>
+// // //             {/* Add these sub-routes to your Profile component if not already there */}
+// // //             <Route path="wishlist" element={<Wishlist />} />
+// // //             {/* other account sub-routes */}
+// // //           </Route>
 
-// // // //   // Determine if we're in the seller section
-// // // //   const isSellerSection = location.pathname.startsWith("/seller");
+// // //           {/* Fallback routes */}
+// // //           <Route
+// // //             path="/seller/*"
+// // //             element={<Navigate to="/seller/account" replace />}
+// // //           />
+// // //           <Route path="*" element={<Navigate to="/" replace />} />
+// // //         </Routes>
+// // //       </div>
+// // //     </ThemeProvider>
+// // //   );
+// // // };
 
-// // // //   return (
-// // // //     <ThemeProvider theme={CustomTheme}>
-// // // //       <div>
-// // // //         {/* Show different navbar based on the section we're in */}
-// // // //         {isSellerSection ? (
-// // // //           <SellerNavbar DrawerList={SellerDrawerList} />
-// // // //         ) : (
-// // // //           <CustomerNavbar />
-// // // //         )}
-
-// // // //         <Routes>
-// // // //           {/* Seller routes */}
-// // // //           <Route path="/seller/*" element={<SellerRoutes />} />
-
-// // // //           {/* Customer routes */}
-// // // //           <Route path="/" element={<Home />} />
-// // // //           <Route path="/products/:category" element={<Product />} />
-// // // //           <Route
-// // // //             path="/product-details/:categoryId/:name/:productId"
-// // // //             element={<ProductDetails />}
-// // // //           />
-// // // //           <Route path="/cart" element={<Cart />} />
-// // // //           <Route path="/checkout" element={<Checkout />} />
-// // // //           <Route path="/account/*" element={<Profile />} />
-
-// // // //           {/* Admin routes */}
-// // // //           {/* <Route path="/admin/sellersTable" element={<SellersTable />} /> */}
-
-// // // //           {/* Special routes */}
-// // // //           {/* <Route
-// // // //             path="/seller/registration-form"
-// // // //             element={<SellerRegistrationForm />}
-// // // //           /> */}
-
-// // // //           {/* Fallback route */}
-// // // //           <Route path="*" element={<Navigate to="/" replace />} />
-// // // //         </Routes>
-// // // //       </div>
-// // // //     </ThemeProvider>
-// // // //   );
-// // // // };
-
-// // // // export default App;
+// // // export default App;
 
 // // import React, { useEffect } from "react";
 // // import { ThemeProvider } from "@mui/material";
@@ -178,19 +175,27 @@
 // // import Profile from "./customer/pages/Account/Profile";
 // // import SellerAccount from "./seller/pages/Account/SellerAccount";
 // // import AddProductForm from "./seller/pages/Products/AddProductForm";
-// // import SellersTable from "./admin/pages/sellers/SellersTable";
+// // import UpdateProductForm from "./seller/pages/Products/UpdateProductForm";
+// // import Products from "./seller/pages/Products/Products";
+// // import SignupForm from "./customer/components/auth/SignupForm";
 
 // // // Import components
 // // import CustomerNavbar from "./customer/components/Navbar/Navbar";
 // // import SellerNavbar from "./seller/components/Navbar/Navbar";
+// // import AdminNavbar from "./admin/components/Navbar/Navbar";
 // // import SellerDrawerList from "./seller/components/SideBar/DrawerList";
-// // import UpdateProductForm from "./seller/pages/Products/UpdateProductForm";
+// // import AdminDrawerList from "./admin/components/SideBar/DrawerList";
+// // import Wishlist from "./customer/pages/Wishlist/Wishlist";
+
+// // // Import admin pages
+// // // import AdminDashboard from "./admin/pages/Dashboard/Dashboard";
+// // // import ManageSellers from "./admin/pages/Sellers/ManageSellers";
 
 // // const App = () => {
 // //   const location = useLocation();
 // //   const navigate = useNavigate();
 // //   const dispatch = useAppDispatch();
-// //   const { token, isLoggedIn, isSeller, isCustomer } = useAuth();
+// //   const { token, isLoggedIn, isSeller, isCustomer, isAdmin } = useAuth();
 
 // //   // Fetch seller profile if we have a token and user is a seller
 // //   useEffect(() => {
@@ -205,8 +210,22 @@
 // //     if (isLoggedIn) {
 // //       const currentPath = location.pathname;
 
+// //       // Handle admin role
+// //       if (isAdmin) {
+// //         // If at admin path already, ensure content loads properly
+// //         if (currentPath.startsWith("/admin")) {
+// //           // If at root admin path, redirect to dashboard
+// //           if (currentPath === "/admin") {
+// //             navigate("/admin/dashboard");
+// //           }
+// //           // Otherwise, stay on current admin path
+// //         } else {
+// //           // If not on admin path but user is admin, redirect to admin dashboard
+// //           navigate("/admin/dashboard");
+// //         }
+// //       }
 // //       // Handle seller role
-// //       if (isSeller) {
+// //       else if (isSeller) {
 // //         // If at seller path already, ensure content loads properly
 // //         if (currentPath.startsWith("/seller")) {
 // //           // If at root seller path, redirect to account
@@ -219,31 +238,56 @@
 // //           navigate("/seller/account");
 // //         }
 // //       }
-// //       // Handle customer role (if not seller or explicitly customer)
-// //       else if (isCustomer || !isSeller) {
-// //         // If on seller path but user is customer, redirect to home
-// //         if (currentPath.startsWith("/seller")) {
+// //       // Handle customer role (if not seller/admin or explicitly customer)
+// //       else if (isCustomer || (!isSeller && !isAdmin)) {
+// //         // If on seller or admin path but user is customer, redirect to home
+// //         if (
+// //           currentPath.startsWith("/seller") ||
+// //           currentPath.startsWith("/admin")
+// //         ) {
 // //           navigate("/");
 // //         }
 // //         // Otherwise, stay on current customer path
 // //       }
 // //     }
-// //   }, [isLoggedIn, isSeller, isCustomer, location.pathname, navigate]);
+// //   }, [isLoggedIn, isSeller, isCustomer, isAdmin, location.pathname, navigate]);
 
-// //   // Determine if we're in the seller section
+// //   // Determine which section we're in
 // //   const isSellerSection = location.pathname.startsWith("/seller");
+// //   const isAdminSection = location.pathname.startsWith("/admin");
 
 // //   return (
 // //     <ThemeProvider theme={CustomTheme}>
 // //       <div>
 // //         {/* Show different navbar based on the section we're in */}
-// //         {isSellerSection ? (
+// //         {isAdminSection ? (
+// //           <AdminNavbar DrawerList={AdminDrawerList} />
+// //         ) : isSellerSection ? (
 // //           <SellerNavbar DrawerList={SellerDrawerList} />
 // //         ) : (
 // //           <CustomerNavbar />
 // //         )}
 
 // //         <Routes>
+// //           {/* Add signup route */}
+// //           <Route path="/signup" element={<SignupForm />} />
+
+// //           {/* Admin protected routes */}
+// //           {/* <Route
+// //             path="/admin/dashboard"
+// //             element={isAdmin ? <AdminDashboard /> : <Navigate to="/" replace />}
+// //           />
+// //           <Route
+// //             path="/admin/sellers"
+// //             element={isAdmin ? <ManageSellers /> : <Navigate to="/" replace />}
+// //           /> */}
+
+// //           {/* Default admin route redirects to dashboard */}
+// //           <Route
+// //             path="/admin"
+// //             element={<Navigate to="/admin/dashboard" replace />}
+// //           />
+
 // //           {/* Seller protected routes */}
 // //           <Route
 // //             path="/seller/account"
@@ -255,12 +299,16 @@
 // //               isSeller ? <AddProductForm /> : <Navigate to="/" replace />
 // //             }
 // //           />
-// //           {/* <Route
-// //             path="/seller/update-product"
+// //           <Route
+// //             path="/seller/products"
+// //             element={isSeller ? <Products /> : <Navigate to="/" replace />}
+// //           />
+// //           <Route
+// //             path="/seller/update-product/:productId"
 // //             element={
 // //               isSeller ? <UpdateProductForm /> : <Navigate to="/" replace />
 // //             }
-// //           /> */}
+// //           />
 // //           {/* Add other seller routes with similar protection */}
 
 // //           {/* Default seller route redirects to account */}
@@ -278,12 +326,18 @@
 // //           />
 // //           <Route path="/cart" element={<Cart />} />
 // //           <Route path="/checkout" element={<Checkout />} />
-// //           <Route path="/account/*" element={<Profile />} />
 
-// //           {/* Admin routes */}
-// //           <Route path="/admin/sellersTable" element={<SellersTable />} />
+// //           <Route path="/account/*" element={<Profile />}>
+// //             {/* Add these sub-routes to your Profile component if not already there */}
+// //             <Route path="wishlist" element={<Wishlist />} />
+// //             {/* other account sub-routes */}
+// //           </Route>
 
 // //           {/* Fallback routes */}
+// //           <Route
+// //             path="/admin/*"
+// //             element={<Navigate to="/admin/dashboard" replace />}
+// //           />
 // //           <Route
 // //             path="/seller/*"
 // //             element={<Navigate to="/seller/account" replace />}
@@ -321,19 +375,28 @@
 // import SellerAccount from "./seller/pages/Account/SellerAccount";
 // import AddProductForm from "./seller/pages/Products/AddProductForm";
 // import UpdateProductForm from "./seller/pages/Products/UpdateProductForm";
-// import Products from "./seller/pages/Products/Products"; // Assuming you have this component
-// import SellersTable from "./admin/pages/sellers/SellersTable";
+// import Products from "./seller/pages/Products/Products";
+// import SignupForm from "./customer/components/auth/SignupForm";
 
 // // Import components
 // import CustomerNavbar from "./customer/components/Navbar/Navbar";
 // import SellerNavbar from "./seller/components/Navbar/Navbar";
+// import AdminNavbar from "./admin/components/Navbar/Navbar";
 // import SellerDrawerList from "./seller/components/SideBar/DrawerList";
+// import AdminDrawerList from "./admin/components/SideBar/DrawerList";
+// import Wishlist from "./customer/pages/Wishlist/Wishlist";
+
+// // Import admin pages
+// // import AdminDashboard from "./admin/pages/Dashboard/AdminDashboard";
+// import AdminDashboard from "./admin/pages/AdminDashboard";
+// import SellersList from "./admin/pages/SellerList";
+// import CreateSellerForm from "./admin/pages/CreateSellerForm";
 
 // const App = () => {
 //   const location = useLocation();
 //   const navigate = useNavigate();
 //   const dispatch = useAppDispatch();
-//   const { token, isLoggedIn, isSeller, isCustomer } = useAuth();
+//   const { token, isLoggedIn, isSeller, isCustomer, isAdmin } = useAuth();
 
 //   // Fetch seller profile if we have a token and user is a seller
 //   useEffect(() => {
@@ -348,8 +411,22 @@
 //     if (isLoggedIn) {
 //       const currentPath = location.pathname;
 
+//       // Handle admin role
+//       if (isAdmin) {
+//         // If at admin path already, ensure content loads properly
+//         if (currentPath.startsWith("/admin")) {
+//           // If at root admin path, redirect to dashboard
+//           if (currentPath === "/admin") {
+//             navigate("/admin/dashboard");
+//           }
+//           // Otherwise, stay on current admin path
+//         } else {
+//           // If not on admin path but user is admin, redirect to admin dashboard
+//           navigate("/admin/dashboard");
+//         }
+//       }
 //       // Handle seller role
-//       if (isSeller) {
+//       else if (isSeller) {
 //         // If at seller path already, ensure content loads properly
 //         if (currentPath.startsWith("/seller")) {
 //           // If at root seller path, redirect to account
@@ -362,31 +439,78 @@
 //           navigate("/seller/account");
 //         }
 //       }
-//       // Handle customer role (if not seller or explicitly customer)
-//       else if (isCustomer || !isSeller) {
-//         // If on seller path but user is customer, redirect to home
-//         if (currentPath.startsWith("/seller")) {
+//       // Handle customer role (if not seller/admin or explicitly customer)
+//       else if (isCustomer || (!isSeller && !isAdmin)) {
+//         // If on seller or admin path but user is customer, redirect to home
+//         if (
+//           currentPath.startsWith("/seller") ||
+//           currentPath.startsWith("/admin")
+//         ) {
 //           navigate("/");
 //         }
 //         // Otherwise, stay on current customer path
 //       }
 //     }
-//   }, [isLoggedIn, isSeller, isCustomer, location.pathname, navigate]);
+//   }, [isLoggedIn, isSeller, isCustomer, isAdmin, location.pathname, navigate]);
 
-//   // Determine if we're in the seller section
+//   // Determine which section we're in
 //   const isSellerSection = location.pathname.startsWith("/seller");
+//   const isAdminSection = location.pathname.startsWith("/admin");
 
 //   return (
 //     <ThemeProvider theme={CustomTheme}>
 //       <div>
 //         {/* Show different navbar based on the section we're in */}
-//         {isSellerSection ? (
+//         {isAdminSection ? (
+//           <AdminNavbar DrawerList={AdminDrawerList} />
+//         ) : isSellerSection ? (
 //           <SellerNavbar DrawerList={SellerDrawerList} />
 //         ) : (
 //           <CustomerNavbar />
 //         )}
 
 //         <Routes>
+//           {/* Add signup route */}
+//           <Route path="/signup" element={<SignupForm />} />
+
+//           {/* Admin protected routes */}
+//           <Route
+//             path="/admin/sellers"
+//             element={isAdmin ? <SellersList /> : <Navigate to="/" replace />}
+//           />
+//           <Route
+//             path="/admin/create-seller"
+//             element={
+//               isAdmin ? <CreateSellerForm /> : <Navigate to="/" replace />
+//             }
+//           />
+//           <Route
+//             path="/admin/users"
+//             element={
+//               isAdmin ? (
+//                 <div>User Management Page</div>
+//               ) : (
+//                 <Navigate to="/" replace />
+//               )
+//             }
+//           />
+//           <Route
+//             path="/admin/settings"
+//             element={
+//               isAdmin ? (
+//                 <div>System Settings Page</div>
+//               ) : (
+//                 <Navigate to="/" replace />
+//               )
+//             }
+//           />
+
+//           {/* Default admin route redirects to dashboard */}
+//           <Route
+//             path="/admin"
+//             element={<Navigate to="/admin/dashboard" replace />}
+//           />
+
 //           {/* Seller protected routes */}
 //           <Route
 //             path="/seller/account"
@@ -425,12 +549,18 @@
 //           />
 //           <Route path="/cart" element={<Cart />} />
 //           <Route path="/checkout" element={<Checkout />} />
-//           <Route path="/account/*" element={<Profile />} />
 
-//           {/* Admin routes */}
-//           <Route path="/admin/sellersTable" element={<SellersTable />} />
+//           <Route path="/account/*" element={<Profile />}>
+//             {/* Add these sub-routes to your Profile component if not already there */}
+//             <Route path="wishlist" element={<Wishlist />} />
+//             {/* other account sub-routes */}
+//           </Route>
 
 //           {/* Fallback routes */}
+//           <Route
+//             path="/admin/*"
+//             element={<Navigate to="/admin/dashboard" replace />}
+//           />
 //           <Route
 //             path="/seller/*"
 //             element={<Navigate to="/seller/account" replace />}
@@ -469,20 +599,25 @@ import SellerAccount from "./seller/pages/Account/SellerAccount";
 import AddProductForm from "./seller/pages/Products/AddProductForm";
 import UpdateProductForm from "./seller/pages/Products/UpdateProductForm";
 import Products from "./seller/pages/Products/Products";
-import SellersTable from "./admin/pages/sellers/SellersTable";
 import SignupForm from "./customer/components/auth/SignupForm";
 
 // Import components
 import CustomerNavbar from "./customer/components/Navbar/Navbar";
 import SellerNavbar from "./seller/components/Navbar/Navbar";
+import AdminNavbar from "./admin/components/Navbar/Navbar";
 import SellerDrawerList from "./seller/components/SideBar/DrawerList";
+import AdminDrawerList from "./admin/components/SideBar/DrawerList";
 import Wishlist from "./customer/pages/Wishlist/Wishlist";
+
+// Import admin pages
+import SellersList from "./admin/pages/SellerList";
+import CreateSellerForm from "./admin/pages/CreateSellerForm";
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { token, isLoggedIn, isSeller, isCustomer } = useAuth();
+  const { token, isLoggedIn, isSeller, isCustomer, isAdmin } = useAuth();
 
   // Fetch seller profile if we have a token and user is a seller
   useEffect(() => {
@@ -497,8 +632,22 @@ const App = () => {
     if (isLoggedIn) {
       const currentPath = location.pathname;
 
+      // Handle admin role
+      if (isAdmin) {
+        // If at admin path already, ensure content loads properly
+        if (currentPath.startsWith("/admin")) {
+          // If at root admin path, redirect to sellers list
+          if (currentPath === "/admin") {
+            navigate("/admin/sellers");
+          }
+          // Otherwise, stay on current admin path
+        } else {
+          // If not on admin path but user is admin, redirect to sellers list
+          navigate("/admin/sellers");
+        }
+      }
       // Handle seller role
-      if (isSeller) {
+      else if (isSeller) {
         // If at seller path already, ensure content loads properly
         if (currentPath.startsWith("/seller")) {
           // If at root seller path, redirect to account
@@ -511,25 +660,31 @@ const App = () => {
           navigate("/seller/account");
         }
       }
-      // Handle customer role (if not seller or explicitly customer)
-      else if (isCustomer || !isSeller) {
-        // If on seller path but user is customer, redirect to home
-        if (currentPath.startsWith("/seller")) {
+      // Handle customer role (if not seller/admin or explicitly customer)
+      else if (isCustomer || (!isSeller && !isAdmin)) {
+        // If on seller or admin path but user is customer, redirect to home
+        if (
+          currentPath.startsWith("/seller") ||
+          currentPath.startsWith("/admin")
+        ) {
           navigate("/");
         }
         // Otherwise, stay on current customer path
       }
     }
-  }, [isLoggedIn, isSeller, isCustomer, location.pathname, navigate]);
+  }, [isLoggedIn, isSeller, isCustomer, isAdmin, location.pathname, navigate]);
 
-  // Determine if we're in the seller section
+  // Determine which section we're in
   const isSellerSection = location.pathname.startsWith("/seller");
+  const isAdminSection = location.pathname.startsWith("/admin");
 
   return (
     <ThemeProvider theme={CustomTheme}>
       <div>
         {/* Show different navbar based on the section we're in */}
-        {isSellerSection ? (
+        {isAdminSection ? (
+          <AdminNavbar DrawerList={AdminDrawerList} />
+        ) : isSellerSection ? (
           <SellerNavbar DrawerList={SellerDrawerList} />
         ) : (
           <CustomerNavbar />
@@ -538,6 +693,44 @@ const App = () => {
         <Routes>
           {/* Add signup route */}
           <Route path="/signup" element={<SignupForm />} />
+
+          {/* Admin routes */}
+          <Route
+            path="/admin/sellers"
+            element={isAdmin ? <SellersList /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/admin/create-seller"
+            element={
+              isAdmin ? <CreateSellerForm /> : <Navigate to="/" replace />
+            }
+          />
+          {/* <Route
+            path="/admin/users"
+            element={
+              isAdmin ? (
+                <div>User Management Page</div>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              isAdmin ? (
+                <div>System Settings Page</div>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          /> */}
+
+          {/* Default admin route redirects to sellers list */}
+          <Route
+            path="/admin"
+            element={<Navigate to="/admin/sellers" replace />}
+          />
 
           {/* Seller protected routes */}
           <Route
@@ -577,7 +770,6 @@ const App = () => {
           />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          {/* <Route path="/account/*" element={<Profile />} /> */}
 
           <Route path="/account/*" element={<Profile />}>
             {/* Add these sub-routes to your Profile component if not already there */}
@@ -585,10 +777,11 @@ const App = () => {
             {/* other account sub-routes */}
           </Route>
 
-          {/* Admin routes */}
-          <Route path="/admin/sellersTable" element={<SellersTable />} />
-
           {/* Fallback routes */}
+          <Route
+            path="/admin/*"
+            element={<Navigate to="/admin/sellers" replace />}
+          />
           <Route
             path="/seller/*"
             element={<Navigate to="/seller/account" replace />}

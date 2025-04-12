@@ -8,6 +8,7 @@ import com.shoppit.ecommerce.request.SignupRequest;
 import com.shoppit.ecommerce.service.AuthService;
 import com.shoppit.ecommerce.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,12 @@ public class AdminController {
 
     @PreAuthorize("hasRole('client_admin')")
     @PostMapping("/createSeller")
-    public ResponseEntity<?> createSeller(@RequestBody SignupRequest req) throws SellerException {
+    public ResponseEntity<String> createSeller(@RequestBody SignupRequest req) throws SellerException {
 
-        keycloakUserService.createUser(req);
-        return ResponseEntity.ok(sellerService.createSeller(req));
+//        keycloakUserService.createUser(req);
+//        return ResponseEntity.ok(sellerService.createSeller(req));
+        sellerService.createSeller(req);
+        return keycloakUserService.createUser(req); // Itself a response entity, return keycloak's user id
     }
 
     @PreAuthorize("hasRole('client_admin')")

@@ -21,7 +21,7 @@ public class Wishlist {
     @OneToOne
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>();
 
     public Long getId() {

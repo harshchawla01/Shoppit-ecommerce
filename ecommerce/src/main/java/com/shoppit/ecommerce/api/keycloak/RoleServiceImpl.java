@@ -31,14 +31,9 @@ public class RoleServiceImpl implements RoleService {
     private KeycloakUserService keycloakUserService;
 
     @Override
-    public void assignRole(String userId, String roleName, boolean isClientRole) {
+    public void assignRole(String userId, String roleName) {
         UserResource userResource = keycloakUserService.getUserResource(userId);
-
-        if (isClientRole) {
-            assignClientRole(userResource, roleName);
-        } else {
-            assignRealmRole(userResource, roleName);
-        }
+        assignClientRole(userResource, roleName);
     }
 
     private void assignRealmRole(UserResource userResource, String roleName) {
