@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PricingCard from "../Cart/PricingCard";
+import OrderSummary from "../Cart/OrderSummary";
 import {
   Box,
   Button,
@@ -30,27 +30,11 @@ const style = {
   p: 4,
 };
 
-// const paymentGatwayList = [
-//   {
-//     value: "RAZORPAY",
-//     image:
-//       "https://razorpay.com/newsroom-content/uploads/2020/12/output-onlinepngtools-1-1.png",
-//     label: "Razarpay",
-//   },
-//   {
-//     value: "STRIPE",
-//     image: "/stripe_logo.png",
-//     label: "Stripe",
-//   },
-// ];
 const Checkout = () => {
   //   const navigate = useNavigate();
   const [value, setValue] = useState(0);
-  //   const dispatch = useAppDispatch();
-  //   const { user } = useAppSelector((store) => store);
-  //   const [paymentGateway, setPaymentGateway] = useState(
-  //     paymentGatwayList[0].value
-  //   );
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((store) => store);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -91,11 +75,11 @@ const Checkout = () => {
             <div className="space-y-3">
               {[1, 1, 1].map((item, index) => (
                 <AddressCard
-                //   key={item.id}
-                //   item={item}
-                //   selectedValue={value}
-                //   value={index}
-                //   handleChange={handleChange}
+                  key={item}
+                  //   item={item}
+                  //   selectedValue={value}
+                  //   value={index}
+                  //   handleChange={handleChange}
                 />
               ))}
             </div>
@@ -109,7 +93,7 @@ const Checkout = () => {
 
         <div className="col-span-1 text-sm space-y-3 ">
           <section className="border rounded-md">
-            <PricingCard />
+            {/* <OrderSummary /> */}
             <div className="p-5">
               <Button
                 // onClick={handleCreateOrder}

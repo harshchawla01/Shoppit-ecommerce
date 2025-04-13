@@ -5,12 +5,14 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Order from "./Order";
 import UserDetails from "./UserDetails";
 import OrderDetails from "./OrderDetails";
+import Wishlist from "../Wishlist/Wishlist";
 // import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
 // import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 
 const menu = [
-  { name: "orders", path: "/account/orders" },
-  { name: "profile", path: "/account/profile" },
+  { name: "Wishlist", path: "/account/wishlist" },
+  { name: "Orders", path: "/account/orders" },
+  { name: "Profile", path: "/account/profile" },
   { name: "Logout", path: "/" },
 ];
 const Profile = () => {
@@ -68,7 +70,9 @@ const Profile = () => {
         <div className="lg:col-span-2 lg:pl-5 py-5">
           <Routes>
             <Route path="/" element={<UserDetails />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/orders" element={<Order />} />
+
             <Route
               path="/orders/:orderId/:orderItemId"
               element={<OrderDetails />}
