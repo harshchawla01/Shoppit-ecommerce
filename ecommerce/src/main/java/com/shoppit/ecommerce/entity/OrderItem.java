@@ -1,7 +1,6 @@
-package com.shoppit.ecommerce.entity.order;
+package com.shoppit.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.shoppit.ecommerce.entity.Product;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

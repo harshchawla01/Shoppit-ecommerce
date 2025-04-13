@@ -3,9 +3,9 @@ package com.shoppit.ecommerce.service;
 import com.shoppit.ecommerce.entity.Address;
 import com.shoppit.ecommerce.entity.Cart;
 import com.shoppit.ecommerce.entity.User;
-import com.shoppit.ecommerce.entity.order.Order;
-import com.shoppit.ecommerce.entity.order.OrderItem;
-import com.shoppit.ecommerce.entity.order.OrderStatus;
+import com.shoppit.ecommerce.entity.Order;
+import com.shoppit.ecommerce.entity.OrderItem;
+import com.shoppit.ecommerce.entity.OrderStatus;
 import com.shoppit.ecommerce.exception.OrderException;
 import org.springframework.stereotype.Service;
 

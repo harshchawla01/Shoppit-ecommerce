@@ -55,7 +55,7 @@ export interface SignupRequest {
     firstName: string;
     lastName: string;
     password: string;
-    navigate?: any; // This wasn't in your Spring Boot model but in your original React interface
+    // navigate?: any; // This wasn't in your Spring Boot model but in your original React interface
 }
 
 export interface AuthState {

@@ -1,6 +1,5 @@
 package com.shoppit.ecommerce.entity;
 
-import com.shoppit.ecommerce.entity.order.Order;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,11 +1,189 @@
+// import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+// import axios from "axios";
+// import { api } from "../../Config/Api";
+// import { Product } from "../../types/productTypes";
+
+// const API_URL = "api/sellers/product";
+
+// export const fetchSellerProducts = createAsyncThunk<Product[], any>(
+//   "sellerProduct/fetchSellerProducts",
+//   async (jwt, { rejectWithValue }) => {
+//     try {
+//       const response = await api.get<Product[]>(API_URL, {
+//         headers: { Authorization: `Bearer ${jwt}` },
+//       });
+//       console.log("seller products ", response.data);
+//       return response.data;
+//     } catch (error: any) {
+//       console.log("error ", error.response);
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+// export const createProduct = createAsyncThunk<
+//   Product,
+//   { request: any; jwt: string | null }
+// >(
+//   "sellerProduct/createProduct",
+//   async ({ request, jwt }, { rejectWithValue }) => {
+//     try {
+//       const response = await api.post<Product>(API_URL, request, {
+//         headers: { Authorization: `Bearer ${jwt}` },
+//       });
+//       console.log("product created ", response.data);
+//       return response.data;
+//     } catch (error: any) {
+//       console.log("error ", error.response);
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+// export const updateProduct = createAsyncThunk<
+//   any,
+//   { productId: number; product: any }
+// >(
+//   "sellerProduct/updateProduct",
+//   async ({ productId, product }, { rejectWithValue }) => {
+//     try {
+//       const response = await api.patch(`${API_URL}/${productId}`, product, {
+//         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+//       });
+//       console.log("product updated ", response.data);
+//       return response.data;
+//     } catch (error: any) {
+//       console.log("error ", error);
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+// export const deleteProduct = createAsyncThunk<void, number>(
+//   "sellerProduct/deleteProduct",
+//   async (productId, { rejectWithValue }) => {
+//     try {
+//       await api.delete(`${API_URL}/${productId}`);
+//     } catch (error: any) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+// interface SellerProductState {
+//   products: Product[];
+//   loading: boolean;
+//   error: string | null;
+//   productCreated: boolean;
+// }
+
+// const initialState: SellerProductState = {
+//   products: [],
+//   loading: false,
+//   error: null,
+//   productCreated: false,
+// };
+
+// const sellerProductSlice = createSlice({
+//   name: "sellerProduct",
+//   initialState,
+//   reducers: {},
+//   extraReducers: (builder) => {
+//     builder
+//       .addCase(fetchSellerProducts.pending, (state) => {
+//         state.loading = true;
+//         state.error = null;
+//         state.productCreated = false;
+//       })
+//       .addCase(
+//         fetchSellerProducts.fulfilled,
+//         (state, action: PayloadAction<Product[]>) => {
+//           state.products = action.payload;
+//           state.loading = false;
+//         }
+//       )
+//       .addCase(fetchSellerProducts.rejected, (state, action) => {
+//         state.loading = false;
+//         state.error = action.error.message || "Failed to fetch products";
+//       })
+//       .addCase(createProduct.pending, (state) => {
+//         state.loading = true;
+//         state.error = null;
+//         state.productCreated = false;
+//       })
+//       .addCase(
+//         createProduct.fulfilled,
+//         (state, action: PayloadAction<Product>) => {
+//           state.products.push(action.payload);
+//           state.loading = false;
+//           state.productCreated = true;
+//         }
+//       )
+//       .addCase(createProduct.rejected, (state, action) => {
+//         state.loading = false;
+//         state.error = action.error.message || "Failed to create product";
+//         state.productCreated = false;
+//       })
+//       .addCase(updateProduct.pending, (state) => {
+//         state.loading = true;
+//         state.error = null;
+//       })
+//       .addCase(
+//         updateProduct.fulfilled,
+//         (state, action: PayloadAction<Product>) => {
+//           const index = state.products.findIndex(
+//             (product) => product.id === action.payload.id
+//           );
+//           if (index !== -1) {
+//             state.products[index] = action.payload;
+//           }
+//           state.loading = false;
+//         }
+//       )
+//       .addCase(updateProduct.rejected, (state, action) => {
+//         state.loading = false;
+//         state.error = action.error.message || "Failed to update product";
+//       })
+//       // .addCase(
+//       //   updateProductStock.fulfilled,
+//       //   (state, action: PayloadAction<Product>) => {
+//       //     const index = state.products.findIndex(
+//       //       (product) => product.id === action.payload.id
+//       //     );
+//       //     if (index !== -1) {
+//       //       state.products[index] = action.payload;
+//       //     }
+//       //     state.loading = false;
+//       //   }
+//       // )
+//       .addCase(deleteProduct.pending, (state) => {
+//         state.loading = true;
+//         state.error = null;
+//       })
+//       .addCase(deleteProduct.fulfilled, (state, action) => {
+//         state.products = state.products.filter(
+//           (product) => product.id !== action.meta.arg
+//         );
+//         state.loading = false;
+//       })
+//       .addCase(deleteProduct.rejected, (state, action) => {
+//         state.loading = false;
+//         state.error = action.error.message || "Failed to delete product";
+//       });
+//   },
+// });
+
+// export default sellerProductSlice.reducer;
+
+
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { api } from "../../Config/Api";
 import { Product } from "../../types/productTypes";
 
 const API_URL = "api/sellers/product";
 
-export const fetchSellerProducts = createAsyncThunk<Product[], any>(
+// Fetch all products for a seller
+export const fetchSellerProducts = createAsyncThunk<Product[], string>(
   "sellerProduct/fetchSellerProducts",
   async (jwt, { rejectWithValue }) => {
     try {
@@ -21,9 +199,24 @@ export const fetchSellerProducts = createAsyncThunk<Product[], any>(
   }
 );
 
+// Interface matching the backend CreateProductRequest
+interface CreateProductRequest {
+  title: string;
+  description: string;
+  mrpPrice: number;
+  sellingPrice: number;
+  discountPercent: number;
+  quantity: number;
+  color: string;
+  images: string[];
+  category: any;
+  sizes: string;
+}
+
+// Create a new product
 export const createProduct = createAsyncThunk<
   Product,
-  { request: any; jwt: string | null }
+  { request: CreateProductRequest; jwt: string | null }
 >(
   "sellerProduct/createProduct",
   async ({ request, jwt }, { rejectWithValue }) => {
@@ -40,15 +233,17 @@ export const createProduct = createAsyncThunk<
   }
 );
 
+// Update an existing product
 export const updateProduct = createAsyncThunk<
-  any,
-  { productId: number; product: any }
+  Product,
+  { productId: number; product: Partial<Product> }
 >(
   "sellerProduct/updateProduct",
   async ({ productId, product }, { rejectWithValue }) => {
     try {
-      const response = await api.patch(`${API_URL}/${productId}`, product, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+      const token = localStorage.getItem("kc_token");
+      const response = await api.patch<Product>(`${API_URL}/${productId}`, product, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       console.log("product updated ", response.data);
       return response.data;
@@ -59,31 +254,16 @@ export const updateProduct = createAsyncThunk<
   }
 );
 
-// export const updateProductStock = createAsyncThunk<any, any>(
-//   "sellerProduct/updateProductStock",
-//   async (productId, { rejectWithValue }) => {
-//     try {
-//       const response = await api.patch(
-//         `${API_URL}/${productId}/stock`,
-//         {},
-//         {
-//           headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-//         }
-//       );
-//       console.log("product stock updated ", response.data);
-//       return response.data;
-//     } catch (error: any) {
-//       console.log("error ", error);
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-export const deleteProduct = createAsyncThunk<void, number>(
+// Delete a product
+export const deleteProduct = createAsyncThunk<number, number>(
   "sellerProduct/deleteProduct",
   async (productId, { rejectWithValue }) => {
     try {
-      await api.delete(`${API_URL}/${productId}`);
+      const token = localStorage.getItem("kc_token");
+      await api.delete(`${API_URL}/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return productId;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -95,6 +275,7 @@ interface SellerProductState {
   loading: boolean;
   error: string | null;
   productCreated: boolean;
+  productUpdated: boolean;
 }
 
 const initialState: SellerProductState = {
@@ -102,18 +283,25 @@ const initialState: SellerProductState = {
   loading: false,
   error: null,
   productCreated: false,
+  productUpdated: false,
 };
 
 const sellerProductSlice = createSlice({
   name: "sellerProduct",
   initialState,
-  reducers: {},
+  reducers: {
+    resetProductState: (state) => {
+      state.productCreated = false;
+      state.productUpdated = false;
+      state.error = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
+      // Fetch Products
       .addCase(fetchSellerProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.productCreated = false;
       })
       .addCase(
         fetchSellerProducts.fulfilled,
@@ -126,6 +314,8 @@ const sellerProductSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products";
       })
+      
+      // Create Product
       .addCase(createProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -144,9 +334,12 @@ const sellerProductSlice = createSlice({
         state.error = action.error.message || "Failed to create product";
         state.productCreated = false;
       })
+      
+      // Update Product
       .addCase(updateProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.productUpdated = false;
       })
       .addCase(
         updateProduct.fulfilled,
@@ -158,31 +351,23 @@ const sellerProductSlice = createSlice({
             state.products[index] = action.payload;
           }
           state.loading = false;
+          state.productUpdated = true;
         }
       )
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to update product";
+        state.productUpdated = false;
       })
-      // .addCase(
-      //   updateProductStock.fulfilled,
-      //   (state, action: PayloadAction<Product>) => {
-      //     const index = state.products.findIndex(
-      //       (product) => product.id === action.payload.id
-      //     );
-      //     if (index !== -1) {
-      //       state.products[index] = action.payload;
-      //     }
-      //     state.loading = false;
-      //   }
-      // )
+      
+      // Delete Product
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.products = state.products.filter(
-          (product) => product.id !== action.meta.arg
+          (product) => product.id !== action.payload
         );
         state.loading = false;
       })
@@ -193,4 +378,5 @@ const sellerProductSlice = createSlice({
   },
 });
 
+export const { resetProductState } = sellerProductSlice.actions;
 export default sellerProductSlice.reducer;

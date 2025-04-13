@@ -15,14 +15,6 @@ import OrderSlice from "./Customer/OrderSlice";
 import sellerOrderSlice from "./Seller/sellerOrderSlice";
 import WishlistSlice from "./Customer/WishlistSlice";
 import AdminSlice from "./Admin/AdminSlice";
-// import { 
-//   FLUSH, 
-//   REHYDRATE, 
-//   PAUSE, 
-//   PERSIST, 
-//   PURGE, 
-//   REGISTER 
-// } from 'redux-persist';
 
 const rootReducer = combineReducers({
   

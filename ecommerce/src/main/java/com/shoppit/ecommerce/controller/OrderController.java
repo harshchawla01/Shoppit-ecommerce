@@ -1,8 +1,8 @@
 package com.shoppit.ecommerce.controller;
 
 import com.shoppit.ecommerce.entity.*;
-import com.shoppit.ecommerce.entity.order.Order;
-import com.shoppit.ecommerce.entity.order.OrderItem;
+import com.shoppit.ecommerce.entity.Order;
+import com.shoppit.ecommerce.entity.OrderItem;
 import com.shoppit.ecommerce.exception.OrderException;
 import com.shoppit.ecommerce.exception.SellerException;
 import com.shoppit.ecommerce.exception.UserException;
@@ -35,15 +35,15 @@ public class OrderController {
     @PostMapping()
     public ResponseEntity<?> createOrderHandler(
             @RequestBody Address shippingAddress,
-            @RequestParam PaymentMethod paymentMethod,
+//            @RequestParam PaymentMethod paymentMethod,
             @RequestHeader("Authorization") String jwt)
             throws UserException {
 
         User user = userService.findUserByJwtToken(jwt);
         Cart cart = cartService.findUserCart(user);
-        Set<Order> orders = orderService.createOrder(user, shippingAddress, cart);
+        Set<Order> orders = orderService.createOrder(user, shippingAddress, cart); // orders for different sellers
 
-        return new ResponseEntity<>("Payment Link", HttpStatus.OK);
+        return new ResponseEntity<>("Order placed with pending state", HttpStatus.OK);
 
     }
 

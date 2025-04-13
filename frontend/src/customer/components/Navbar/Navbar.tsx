@@ -585,6 +585,7 @@
 
 // export default Navbar;
 
+// This is the customer navbar just for reference for login and logout functionality.
 import React, { useState, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, Box, Button, IconButton, useMediaQuery } from "@mui/material";

@@ -28,7 +28,6 @@ public class Cart {
     private double totalSellingPrice;
     private double totalMrpPrice;
     private double discount;
-    private String couponCode;
 
     public Long getId() {
         return id;
@@ -84,13 +83,5 @@ public class Cart {
 
     public void setDiscount(double discount) {
         this.discount = discount;
-    }
-
-    public String getCouponCode() {
-        return couponCode;
-    }
-
-    public void setCouponCode(String couponCode) {
-        this.couponCode = couponCode;
     }
 }

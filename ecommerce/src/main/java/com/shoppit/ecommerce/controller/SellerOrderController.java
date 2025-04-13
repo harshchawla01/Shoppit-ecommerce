@@ -1,8 +1,8 @@
 package com.shoppit.ecommerce.controller;
 
 import com.shoppit.ecommerce.entity.Seller;
-import com.shoppit.ecommerce.entity.order.Order;
-import com.shoppit.ecommerce.entity.order.OrderStatus;
+import com.shoppit.ecommerce.entity.Order;
+import com.shoppit.ecommerce.entity.OrderStatus;
 import com.shoppit.ecommerce.exception.OrderException;
 import com.shoppit.ecommerce.exception.SellerException;
 import com.shoppit.ecommerce.service.OrderService;

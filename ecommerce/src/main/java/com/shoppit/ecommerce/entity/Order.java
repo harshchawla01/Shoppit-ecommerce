@@ -1,7 +1,5 @@
-package com.shoppit.ecommerce.entity.order;
+package com.shoppit.ecommerce.entity;
 
-import com.shoppit.ecommerce.entity.Address;
-import com.shoppit.ecommerce.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,9 +32,6 @@ public class Order {
     @ManyToOne
     private Address shippingAddress;
 
-//    @Embedded
-//    private PaymentDetails paymentDetails = new PaymentDetails();
-
     private double totalMrpPrice;
     private double totalSellingPrice;
     private double discount;
@@ -45,11 +40,14 @@ public class Order {
 
     private OrderStatus orderStatus;
 
-//    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
-//    Above field already included with embedded Payment Details
     private LocalDateTime orderDate = LocalDateTime.now();
 
     private LocalDateTime shippingDate = orderDate.plusDays(4);
+
+//    @Embedded
+//    private PaymentDetails paymentDetails = new PaymentDetails();
+//    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+//    Above field already included with embedded Payment Details
 
     public Long getId() {
         return id;

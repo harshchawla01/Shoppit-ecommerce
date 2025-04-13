@@ -1,6 +1,6 @@
 package com.shoppit.ecommerce.repository;
 
-import com.shoppit.ecommerce.entity.order.OrderItem;
+import com.shoppit.ecommerce.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
