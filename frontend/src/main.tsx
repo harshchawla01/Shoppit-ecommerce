@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext.tsx";
 import { Provider } from "react-redux";
-import store from "./Redux/store.ts";
+import store from "./redux/store.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

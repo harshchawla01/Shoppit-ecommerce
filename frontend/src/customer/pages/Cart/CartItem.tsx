@@ -21,11 +21,7 @@ interface CartItemProps {
   onUpdateQuantity: (quantity: number) => void;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
-  item,
-  onRemove,
-  onUpdateQuantity,
-}) => {
+const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
   const theme = useTheme();
 
   return (
@@ -63,7 +59,7 @@ const CartItem: React.FC<CartItemProps> = ({
               ₹{item.sellingPrice}
             </Typography>
 
-            {item.mrpPrice > item.sellingPrice && (
+            {item.mrpPrice >= item.sellingPrice && (
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography
                   variant="body2"
@@ -85,7 +81,7 @@ const CartItem: React.FC<CartItemProps> = ({
         </Grid>
 
         <Grid size={{ xs: 7, sm: 3 }}>
-          <Stack
+          <Stack // flex-col
             direction="row"
             alignItems="center"
             sx={{
@@ -96,7 +92,9 @@ const CartItem: React.FC<CartItemProps> = ({
           >
             <IconButton
               size="small"
-              onClick={() => onUpdateQuantity(item.quantity - 1)}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                onUpdateQuantity(item.quantity - 1)
+              }
               disabled={item.quantity <= 1}
             >
               <RemoveIcon fontSize="small" />

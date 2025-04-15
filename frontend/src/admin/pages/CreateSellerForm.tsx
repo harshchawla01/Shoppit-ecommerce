@@ -12,11 +12,11 @@ import {
   Grid,
   Divider,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   completeSellerCreation,
   resetSellerState,
-} from "../../Redux/Admin/AdminSlice";
+} from "../../redux/admin/adminSlice";
 import { useAuth } from "../../auth/AuthContext";
 
 const CreateSellerForm: React.FC = () => {
@@ -24,7 +24,6 @@ const CreateSellerForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isAdmin, token } = useAuth();
 
-  // Get the seller creation state from Redux
   const { loading, error, sellerCreationSuccess } = useAppSelector(
     (state) => state.admin
   );
@@ -40,18 +39,15 @@ const CreateSellerForm: React.FC = () => {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Reset seller state when component unmounts
   useEffect(() => {
     return () => {
       dispatch(resetSellerState());
     };
   }, [dispatch]);
 
-  // Redirect after successful seller creation
   useEffect(() => {
     if (sellerCreationSuccess) {
       console.log("Seller created successfully, redirecting to sellers list");
-      // Short delay before redirecting to sellers list
       const timer = setTimeout(() => {
         navigate("/admin/sellers");
       }, 1500);
@@ -60,7 +56,6 @@ const CreateSellerForm: React.FC = () => {
     }
   }, [sellerCreationSuccess, navigate]);
 
-  // Form validation
   const validateForm = () => {
     const errors: Record<string, string> = {};
 
@@ -117,12 +112,10 @@ const CreateSellerForm: React.FC = () => {
     }
   };
 
-  // Redirect to sellers list
   const handleCancel = () => {
     navigate("/admin/sellers");
   };
 
-  // If not an admin, show access denied
   if (!isAdmin) {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>

@@ -25,11 +25,11 @@ import { womenLevelTwo } from "../../../assets/data/category/levelTwo/womenLevel
 import { menLevelThree } from "../../../assets/data/category/levelThree/menLevelThree";
 import { womenLevelThree } from "../../../assets/data/category/levelThree/womenLevelThree";
 import { colors } from "../../../assets/data/Filter/color";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   createProduct,
   resetProductState,
-} from "../../../Redux/Seller/sellerProductSlice";
+} from "../../../redux/seller/sellerProductSlice";
 import { uploadToCloudinary } from "../../../utils/uploadToCloudnary";
 import { electronicsLevelThree } from "../../../assets/data/category/levelThree/electronicsLevelThree";
 import { electronicsLevelTwo } from "../../../assets/data/category/levelTwo/electronicsLavelTwo";
@@ -77,7 +77,7 @@ const validationSchema = Yup.object({
   sizes: Yup.string().required("Sizes are required"),
 });
 
-const AddProductForm: React.FC = () => {
+const AddProductForm = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const dispatch = useAppDispatch();
   const { sellerProduct } = useAppSelector((store) => store);
@@ -121,7 +121,6 @@ const AddProductForm: React.FC = () => {
         quantity: Number(values.quantity),
         color: values.color,
         images: values.images,
-        // Replace the nested category object with these three separate fields
         category: values.category,
         category2: values.category2,
         category3: values.category3,

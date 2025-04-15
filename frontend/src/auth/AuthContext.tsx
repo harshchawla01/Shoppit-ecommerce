@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isCustomer, setIsCustomer] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  // Initialize Keycloak
   useEffect(() => {
     if (isRun.current) return;
     isRun.current = true;
@@ -58,8 +57,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const storedToken = localStorage.getItem("kc_token");
     const storedRefreshToken = localStorage.getItem("kc_refreshToken");
 
-    // Initialize Keycloak instance
     const client = new Keycloak({
+      // kc instance
       url: "/keycloak",
       realm: "shoppit",
       clientId: "shoppit-ecommerce",
@@ -84,14 +83,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (authenticated && client.token) {
           setToken(client.token);
 
-          // Store tokens in localStorage
           localStorage.setItem("kc_token", client.token);
           localStorage.setItem("kc_refreshToken", client.refreshToken || "");
 
           loadUserInfo(client);
           refreshTokenPeriodically(client);
         } else {
-          // If not authenticated, ensure localStorage is cleared
           localStorage.removeItem("kc_token");
           localStorage.removeItem("kc_refreshToken");
         }
@@ -103,7 +100,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
   }, []);
 
-  // Enhanced function to load user info with roles and set role flags
   const loadUserInfo = async (client: Keycloak) => {
     try {
       if (client.authenticated) {
@@ -123,7 +119,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.log("User profile loaded:", enhancedProfile);
         setUserInfo(enhancedProfile);
 
-        // Set role flags based on retrieved roles
         const hasAdminRole = allRoles.includes("client_admin");
         const hasSellerRole = allRoles.includes("client_seller");
         const hasCustomerRole = allRoles.includes("client_user");
@@ -132,7 +127,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsSeller(hasSellerRole);
         setIsCustomer(hasCustomerRole);
 
-        // Store role information in localStorage for persistence
         localStorage.setItem("isAdmin", String(hasAdminRole));
         localStorage.setItem("isSeller", String(hasSellerRole));
         localStorage.setItem("isCustomer", String(hasCustomerRole));
@@ -153,7 +147,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsSeller(storedIsSeller);
       setIsCustomer(storedIsCustomer);
     } else {
-      // Clear role states if not logged in
       setIsAdmin(false);
       setIsSeller(false);
       setIsCustomer(false);

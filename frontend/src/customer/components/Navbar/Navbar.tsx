@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Avatar, Box, Button, IconButton, useMediaQuery } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  useMediaQuery,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { AddShoppingCart, FavoriteBorder } from "@mui/icons-material";
 import { useTheme, Theme } from "@mui/material/styles";
@@ -14,6 +21,7 @@ const Navbar = () => {
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const [showCategorySheet, setShowCategorySheet] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("men");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
   const { isLoggedIn, userInfo, login, logout } = useAuth();
@@ -31,6 +39,19 @@ const Navbar = () => {
 
   const handleWishlistClick = () => {
     navigate("/account/wishlist");
+  };
+
+  // Handle search input change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Handle search submission
+  const handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?query=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -58,7 +79,7 @@ const Navbar = () => {
                 Shoppit
               </h1>
             </div>
-            <ul className="flex items-center font-medium text-gray-800">
+            <ul className="hidden lg:flex items-center font-medium text-gray-800">
               {mainCategory.map((item) => (
                 <li
                   key={item.categoryId}
@@ -74,17 +95,46 @@ const Navbar = () => {
               ))}
             </ul>
           </div>
-          <div className="flex gap-1 lg:gap-6 items-center">
-            <IconButton>
-              <SearchIcon />
-            </IconButton>
 
-            {/* Authentication UI */}
+          {/* Desktop permanent search bar */}
+          <div className="hidden lg:flex items-center">
+            <form onSubmit={handleSearchSubmit} className="flex">
+              <TextField
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                variant="outlined"
+                size="small"
+                sx={{ width: "250px" }}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  ml: 1,
+                  bgcolor: "#00927c",
+                  "&:hover": {
+                    bgcolor: "#007c69",
+                  },
+                }}
+              >
+                Search
+              </Button>
+            </form>
+          </div>
+
+          <div className="flex gap-1 lg:gap-6 items-center">
+            {!isLarge && (
+              <IconButton>
+                <SearchIcon />
+              </IconButton>
+            )}
+
             {isLoggedIn ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 ml-4">
                 <Avatar
                   sx={{ width: 35, height: 35 }}
-                  src="https://cdn.pixabay.com/photo/2025/02/20/10/38/robin-9419575_1280.jpg"
+                  src={userInfo?.avatar || undefined}
                 />
                 {isLarge && userInfo && (
                   <span className="font-semibold hidden lg:block">
@@ -128,7 +178,7 @@ const Navbar = () => {
                     },
                   }}
                 >
-                  {isLarge ? "New here?" : "Sign up"}
+                  New here?
                 </Button>
               </div>
             )}

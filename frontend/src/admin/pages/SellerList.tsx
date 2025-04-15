@@ -20,8 +20,8 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../Redux/store";
-import { fetchSellers, deleteSeller } from "../../Redux/Admin/AdminSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { fetchSellers, deleteSeller } from "../../redux/admin/adminSlice";
 import { useAuth } from "../../auth/AuthContext";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -36,30 +36,25 @@ const SellersList: React.FC = () => {
   const [sellerToDelete, setSellerToDelete] = useState<number | null>(null);
 
   useEffect(() => {
-    // Check auth and admin privileges
     if (token && isAdmin) {
       dispatch(fetchSellers(token));
     }
   }, [dispatch, token, isAdmin]);
 
-  // Handle create seller button click
   const handleCreateSeller = () => {
     navigate("/admin/create-seller");
   };
 
-  // Open delete confirmation dialog
   const openDeleteDialog = (sellerId: number) => {
     setSellerToDelete(sellerId);
     setDeleteDialogOpen(true);
   };
 
-  // Close delete confirmation dialog
   const closeDeleteDialog = () => {
     setDeleteDialogOpen(false);
     setSellerToDelete(null);
   };
 
-  // Handle seller deletion
   const handleDeleteSeller = async () => {
     if (sellerToDelete) {
       await dispatch(deleteSeller({ id: sellerToDelete, jwt: token! }));
@@ -67,7 +62,6 @@ const SellersList: React.FC = () => {
     }
   };
 
-  // If not an admin, show access denied
   if (!isAdmin) {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -169,7 +163,6 @@ const SellersList: React.FC = () => {
         </TableContainer>
       )}
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>

@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Button, LinearProgress, Modal } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useAppDispatch, useAppSelector } from "../../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   fetchProductById,
   getAllProducts,
-} from "../../../../Redux/Customer/ProductSlice";
-import { addItemToCart } from "../../../../Redux/Customer/CartSlice";
+} from "../../../../redux/customer/productSlice";
+import { addItemToCart } from "../../../../redux/customer/cartSlice";
 import {
   addProductToWishlist,
   getWishlistByUserId,
-} from "../../../../Redux/Customer/WishlistSlice";
+} from "../../../../redux/customer/wishlistSlice";
 import { useAuth } from "../../../../auth/AuthContext";
+import { calculateDiscount } from "../../../../utils/cartCalculator";
 
 const style = {
   position: "absolute",
@@ -42,9 +43,10 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const { isLoggedIn, token } = useAuth();
 
-  // Check if product is in wishlist
-  const isInWishlist = wishlist?.products?.some(
-    (product) => product.id === products.product?.id
+  const isInWishlist = useMemo(
+    () =>
+      wishlist?.products?.some((product) => product.id === Number(productId)),
+    [wishlist, products.product]
   );
 
   useEffect(() => {
@@ -56,7 +58,6 @@ const ProductDetails = () => {
       dispatch(getAllProducts({ category: categoryId }));
     }
 
-    // Fetch wishlist if user is logged in
     if (isLoggedIn && token) {
       dispatch(getWishlistByUserId(token));
     }
@@ -78,21 +79,20 @@ const ProductDetails = () => {
           request: { productId: Number(productId), size: "FREE", quantity },
         })
       )
-        .unwrap()
+        .unwrap() // to convert received action back to promise
         .then(() => {
           console.log("Item added to cart successfully!");
-          // You could add a toast notification here
         })
         .catch((error) => {
           console.error("Failed to add item to cart:", error);
-          // You could add an error notification here
         });
     }
   };
 
   const handleWishlistToggle = () => {
     if (!isLoggedIn) {
-      navigate("/login");
+      console.log("Not logged in");
+      navigate("/");
       return;
     }
 
@@ -101,21 +101,17 @@ const ProductDetails = () => {
         .unwrap()
         .then(() => {
           console.log("Wishlist updated successfully!");
-          // You could add a toast notification here
         })
         .catch((error) => {
           console.error("Failed to update wishlist:", error);
-          // You could add an error notification here
         });
     }
   };
 
-  // Check if product is still loading
   if (products.loading) {
     return <LinearProgress color="primary" />;
   }
 
-  // Check if product was not found
   if (!products.product && !products.loading) {
     return <div className="text-center mt-10">Product not found</div>;
   }
@@ -164,7 +160,16 @@ const ProductDetails = () => {
                 ₹{products.product?.mrpPrice || 0}
               </span>
               <span className="text-[#00927c] font-semibold">
-                {products.product?.discountPercent || 0}% off
+                {/* {products.product?.discountPercent || 0}% off */}
+                {Math.round(
+                  (calculateDiscount(
+                    products.product?.mrpPrice!,
+                    products.product?.sellingPrice!
+                  ) /
+                    products.product?.mrpPrice!) *
+                    100
+                )}
+                % off
               </span>
             </div>
             <p className="text-sm">

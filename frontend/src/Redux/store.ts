@@ -5,16 +5,16 @@ import {
 
 import { thunk } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import sellerSlice from "./Seller/sellerSlice";
-import sellerProductSlice from "./Seller/sellerProductSlice";
-import ProductSlice from "./Customer/ProductSlice";
-import CartSlice from "./Customer/CartSlice";
-import AuthSlice from "./Customer/AuthSlice";
-import UserSlice from "./Customer/UserSlice";
-import OrderSlice from "./Customer/OrderSlice";
-import sellerOrderSlice from "./Seller/sellerOrderSlice";
-import WishlistSlice from "./Customer/WishlistSlice";
-import AdminSlice from "./Admin/AdminSlice";
+import sellerSlice from "./seller/sellerSlice";
+import sellerProductSlice from "./seller/sellerProductSlice";
+import ProductSlice from "./customer/productSlice";
+import CartSlice from "./customer/cartSlice";
+import AuthSlice from "./customer/authSlice";
+import UserSlice from "./customer/userSlice";
+import OrderSlice from "./customer/orderSlice";
+import sellerOrderSlice from "./seller/sellerOrderSlice";
+import WishlistSlice from "./customer/wishlistSlice";
+import AdminSlice from "./admin/adminSlice";
 
 const rootReducer = combineReducers({
   

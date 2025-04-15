@@ -1,4 +1,4 @@
-import DrawerList from "../../../components/drawerList/DrawerList";
+import DrawerList from "../../../seller/components/SideBar/drawerList/DrawerList";
 import { AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";

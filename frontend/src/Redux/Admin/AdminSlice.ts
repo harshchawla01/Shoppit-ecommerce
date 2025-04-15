@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { api } from '../../Config/Api';
+import { api } from '../../config/Api';
 import axios from 'axios';
 import { Seller } from '../../types/sellerTypes';
 import { SignupRequest } from '../../types/authTypes';
@@ -17,7 +17,6 @@ interface SellerState {
   sellerCreationSuccess: boolean;
 }
 
-// Define the initial state
 const initialState: SellerState = {
   sellers: [],
   selectedSeller: null,
@@ -29,7 +28,6 @@ const initialState: SellerState = {
   sellerCreationSuccess: false
 };
 
-// Create a seller in both DB and Keycloak
 export const createSeller = createAsyncThunk<
   string, 
   { sellerData: SignupRequest; jwt: string }
@@ -53,7 +51,6 @@ export const createSeller = createAsyncThunk<
   }
 );
 
-// Assign seller role to the created user
 export const assignSellerRole = createAsyncThunk(
   'admin/assignSellerRole',
   async ({ 
@@ -86,14 +83,12 @@ export const assignSellerRole = createAsyncThunk(
   }
 );
 
-// Handle the entire seller creation flow in one action
 export const completeSellerCreation = createAsyncThunk(
   'admin/completeSellerCreation',
   async ({ sellerData, jwt }: { sellerData: SignupRequest; jwt: string }, { dispatch, rejectWithValue }) => {
     try {
       console.log("Starting complete seller creation process with data:", sellerData);
       
-      // First create the seller user
       const createUserResult = await dispatch(createSeller({ sellerData, jwt }));
       console.log("Seller creation result:", createUserResult);
       
@@ -101,7 +96,6 @@ export const completeSellerCreation = createAsyncThunk(
         const keycloakUserId = createUserResult.payload;
         console.log("Seller created successfully with ID:", keycloakUserId);
         
-        // Then assign the seller role
         const roleResult = await dispatch(assignSellerRole({
           userId: keycloakUserId,
           roleName: 'client_seller',
@@ -190,7 +184,6 @@ export const deleteSeller = createAsyncThunk<void, { id: number; jwt: string }>(
   }
 );
 
-// Create the slice
 const adminSlice = createSlice({
   name: 'admin',
   initialState,
@@ -204,7 +197,6 @@ const adminSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch sellers
       .addCase(fetchSellers.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -221,13 +213,12 @@ const adminSlice = createSlice({
         state.error = (action.payload as string) || "Failed to fetch sellers";
       })
       
-      // Create seller
       .addCase(createSeller.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(createSeller.fulfilled, (state, action) => {
-        state.loading = true; // Keep loading true as we're still assigning roles
+        state.loading = true;
         state.keycloakUserId = action.payload;
       })
       .addCase(createSeller.rejected, (state, action) => {
@@ -235,7 +226,6 @@ const adminSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Assign seller role
       .addCase(assignSellerRole.pending, (state) => {
         state.loading = true;
       })
@@ -248,7 +238,6 @@ const adminSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // Complete seller creation
       .addCase(completeSellerCreation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -265,7 +254,6 @@ const adminSlice = createSlice({
         state.sellerCreationSuccess = false;
       })
       
-      // Delete seller
       .addCase(deleteSeller.pending, (state) => {
         state.loading = true;
         state.error = null;

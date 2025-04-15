@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../Config/Api';
+import { api } from '../../config/Api';
 
 export interface SignupRequest {
   username: string;
@@ -55,7 +55,6 @@ export const assignUserRole = createAsyncThunk(
     isClientRole?: boolean 
   }, { rejectWithValue }) => {
     try {
-      // Using api instead of axios
       await api.put(
         `/roles/assign-role/user/${userId}`,
         null,
@@ -73,14 +72,12 @@ export const assignUserRole = createAsyncThunk(
   }
 );
 
-// Handle the entire signup flow in one action
 export const completeSignup = createAsyncThunk(
   'auth/completeSignup',
   async (signupData: SignupRequest, { dispatch, rejectWithValue }) => {
     try {
       console.log("Starting complete signup process with data:", signupData);
       
-      // First create the user
       const userResult = await dispatch(createUser(signupData));
       console.log("User creation result:", userResult);
       
@@ -88,7 +85,6 @@ export const completeSignup = createAsyncThunk(
         const keycloakUserId = userResult.payload.keycloakUserId;
         console.log("User created successfully with ID:", keycloakUserId);
         
-        // Then assign the role
         const roleResult = await dispatch(assignUserRole({
           userId: keycloakUserId,
           roleName: 'client_user',
@@ -128,7 +124,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // createUser reducers
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -142,7 +137,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // assignUserRole reducers
       .addCase(assignUserRole.pending, (state) => {
         state.isLoading = true;
       })
@@ -155,7 +149,6 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       
-      // completeSignup reducers
       .addCase(completeSignup.pending, (state) => {
         state.isLoading = true;
         state.error = null;

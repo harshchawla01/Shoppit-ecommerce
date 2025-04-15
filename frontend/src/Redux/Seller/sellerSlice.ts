@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 import { Seller } from "../../types/sellerTypes";
-import { api } from "../../Config/Api";
+import { api } from "../../config/Api";
 
 interface SellerState {
   sellers: Seller[];

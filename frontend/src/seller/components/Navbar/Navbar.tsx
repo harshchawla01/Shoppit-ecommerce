@@ -20,15 +20,12 @@ const Navbar = ({ DrawerList }: any) => {
     setOpen(newOpen);
   };
 
-  // Handle login click
   const handleLogin = () => {
     login();
   };
 
-  // Handle logout with redirect
   const handleLogout = () => {
     logout();
-    // Will be redirected by the App component's useEffect
   };
 
   return (

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Order, OrderItem, OrderState, OrderStatus } from "../../types/orderTypes";
 import { Address } from "../../types/userTypes";
-import { api } from "../../Config/Api";
+import { api } from "../../config/Api";
 
 const initialState: OrderState = {
   orders: [],
@@ -222,7 +222,6 @@ export const { clearOrderState } = orderSlice.actions;
 
 export default orderSlice.reducer;
 
-// Selectors
 export const selectOrders = (state: RootState) => state.orders.orders;
 export const selectCurrentOrder = (state: RootState) => state.orders.currentOrder;
 export const selectOrderItem = (state: RootState) => state.orders.orderItem;

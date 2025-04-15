@@ -18,11 +18,11 @@ import {
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from "@mui/icons-material/Close";
 import { colors } from "../../../assets/data/Filter/color";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
-import { updateProduct } from "../../../Redux/Seller/sellerProductSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { updateProduct } from "../../../redux/seller/sellerProductSlice";
 import { uploadToCloudinary } from "../../../utils/uploadToCloudnary";
 import { useParams } from "react-router-dom";
-import { fetchProductById } from "../../../Redux/Customer/ProductSlice";
+import { fetchProductById } from "../../../redux/customer/productSlice";
 import { Product } from "../../../types/productTypes";
 
 const validationSchema = Yup.object({
@@ -38,10 +38,6 @@ const validationSchema = Yup.object({
   sellingPrice: Yup.number()
     .positive("Selling Price should be greater than zero")
     .required("Selling Price is required"),
-  discountPercent: Yup.number()
-    .min(0, "Discount Percent cannot be negative")
-    .max(100, "Discount Percent cannot exceed 100")
-    .required("Discount Percent is required"),
   quantity: Yup.number()
     .positive("Quantity should be greater than zero")
     .required("Quantity is required"),
@@ -104,7 +100,6 @@ const UpdateProductForm = () => {
     setOpenSnackbar(false);
   };
 
-  // Calculate discount percent when either mrpPrice or sellingPrice changes
   useEffect(() => {
     if (formik.values.mrpPrice && formik.values.sellingPrice) {
       const mrp = Number(formik.values.mrpPrice);
@@ -117,21 +112,18 @@ const UpdateProductForm = () => {
     }
   }, [formik.values.mrpPrice, formik.values.sellingPrice]);
 
-  // Fetch product data when component mounts
   useEffect(() => {
     if (productId) {
       dispatch(fetchProductById(Number(productId)));
     }
   }, [productId, dispatch]);
 
-  // Show snackbar when product is updated or there's an error
   useEffect(() => {
     if (sellerProduct.productUpdated || sellerProduct.error) {
       setOpenSnackbar(true);
     }
   }, [sellerProduct.productUpdated, sellerProduct.error]);
 
-  // Set form values when product data is loaded
   useEffect(() => {
     if (products.product) {
       formik.setValues({
@@ -273,30 +265,6 @@ const UpdateProductForm = () => {
               }
               helperText={
                 formik.touched.sellingPrice && formik.errors.sellingPrice
-              }
-              required
-            />
-          </Grid>
-
-          {/* Discount Percent - Calculated automatically but can be overridden */}
-          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-            <TextField
-              fullWidth
-              id="discountPercent"
-              name="discountPercent"
-              label="Discount Percent"
-              type="number"
-              InputProps={{
-                readOnly: false, // Allow manual override if needed
-              }}
-              value={formik.values.discountPercent}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.discountPercent &&
-                Boolean(formik.errors.discountPercent)
-              }
-              helperText={
-                formik.touched.discountPercent && formik.errors.discountPercent
               }
               required
             />

@@ -10,7 +10,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   updateSeller,
   resetProfileUpdated,
@@ -18,7 +18,7 @@ import {
   selectSellerLoading,
   selectProfileUpdated,
   selectSellerError,
-} from "../../../Redux/Seller/sellerSlice";
+} from "../../../redux/seller/sellerSlice";
 import { useAuth } from "../../../auth/AuthContext";
 
 const SellerAccount = () => {

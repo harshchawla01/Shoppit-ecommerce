@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {
   IconButton,
-  styled,
   Typography,
   Box,
   Chip,
@@ -20,34 +19,15 @@ import {
   Button,
   TablePagination,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   fetchSellerProducts,
   deleteProduct,
-} from "../../../Redux/Seller/sellerProductSlice";
+} from "../../../redux/seller/sellerProductSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
 const ProductTable = () => {
   const [page, setPage] = useState(0);
@@ -66,7 +46,7 @@ const ProductTable = () => {
     }
   }, [dispatch, token]);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -99,7 +79,6 @@ const ProductTable = () => {
     setProductToDelete(null);
   };
 
-  // Calculate discounted percentage for display
   const calculateDiscount = (mrp: number, selling: number) => {
     if (mrp <= 0) return 0;
     const discount = ((mrp - selling) / mrp) * 100;
@@ -153,21 +132,19 @@ const ProductTable = () => {
             <Table sx={{ minWidth: 700 }} aria-label="product table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Image</StyledTableCell>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell align="right">MRP (₹)</StyledTableCell>
-                  <StyledTableCell align="right">
-                    Selling Price (₹)
-                  </StyledTableCell>
-                  <StyledTableCell align="right">Discount</StyledTableCell>
-                  <StyledTableCell align="right">Quantity</StyledTableCell>
-                  <StyledTableCell align="center">Actions</StyledTableCell>
+                  <TableCell>Image</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell align="right">MRP (₹)</TableCell>
+                  <TableCell align="right">Selling Price (₹)</TableCell>
+                  <TableCell align="right">Discount</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {displayedProducts.map((product: any) => (
-                  <StyledTableRow key={product.id}>
-                    <StyledTableCell>
+                  <TableRow key={product.id}>
+                    <TableCell>
                       {product.images && product.images.length > 0 ? (
                         <img
                           src={product.images[0]}
@@ -189,19 +166,15 @@ const ProductTable = () => {
                           }}
                         />
                       )}
-                    </StyledTableCell>
-                    <StyledTableCell>
+                    </TableCell>
+                    <TableCell>
                       <Typography variant="body2" noWrap sx={{ maxWidth: 200 }}>
                         {product.title}
                       </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      ₹{product.mrpPrice}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      ₹{product.sellingPrice}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
+                    </TableCell>
+                    <TableCell align="right">₹{product.mrpPrice}</TableCell>
+                    <TableCell align="right">₹{product.sellingPrice}</TableCell>
+                    <TableCell align="right">
                       <Chip
                         label={`${calculateDiscount(
                           product.mrpPrice,
@@ -210,15 +183,15 @@ const ProductTable = () => {
                         color="success"
                         size="small"
                       />
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
+                    </TableCell>
+                    <TableCell align="right">
                       {product.quantity > 0 ? (
                         product.quantity
                       ) : (
                         <Chip label="Out of stock" color="error" size="small" />
                       )}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
+                    </TableCell>
+                    <TableCell align="center">
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <IconButton
                           color="primary"
@@ -235,8 +208,8 @@ const ProductTable = () => {
                           <DeleteIcon />
                         </IconButton>
                       </Box>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                    </TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>
@@ -254,7 +227,7 @@ const ProductTable = () => {
         </>
       )}
 
-      {/* Delete Confirmation Dialog */}
+      {/* Modal */}
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

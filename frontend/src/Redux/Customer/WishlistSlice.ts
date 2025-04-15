@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Wishlist, WishlistState } from "../../types/wishlistTypes";
-import { api } from "../../Config/Api";
+import { api } from "../../config/Api";
 
 const initialState: WishlistState = {
   wishlist: null,
@@ -46,6 +46,29 @@ export const addProductToWishlist = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data.message || "Failed to add product to wishlist"
+      );
+    }
+  }
+);
+
+export const removeProductFromWishlist = createAsyncThunk(
+  "wishlist/removeProductFromWishlist",
+  async ({ token, productId }: { token: string, productId: number }, { rejectWithValue }) => {
+    try {
+      console.log({ token, productId });
+      const response = await api.post(
+        `/api/wishlist/remove-product/${productId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data.message || "Failed to remove product from wishlist"
       );
     }
   }
@@ -97,6 +120,24 @@ const wishlistSlice = createSlice({
     );
     builder.addCase(
       addProductToWishlist.rejected,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      }
+    );
+    builder.addCase(removeProductFromWishlist.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      removeProductFromWishlist.fulfilled,
+      (state, action: PayloadAction<Wishlist>) => {
+        state.wishlist = action.payload;
+        state.loading = false;
+      }
+    );
+    builder.addCase(
+      removeProductFromWishlist.rejected,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;

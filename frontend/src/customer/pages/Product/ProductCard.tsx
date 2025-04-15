@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./ProductCard.css";
 import { Button } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { teal } from "@mui/material/colors";
 import { Product } from "../../../types/productTypes";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { useAuth } from "../../../auth/AuthContext";
-import { addProductToWishlist } from "../../../Redux/Customer/WishlistSlice";
+import { addProductToWishlist } from "../../../redux/customer/wishlistSlice";
 
 interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   // console.log(product);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -22,12 +21,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { token, isLoggedIn } = useAuth();
   const { wishlist } = useAppSelector((state) => state.wishlist);
 
-  // Check if product is in wishlist
   const isInWishlist = wishlist?.products?.some(
     (item) => item.id === product.id
   );
 
-  // Calculate discount percentage if not provided
   const discountPercent =
     product.discountPercent ||
     Math.round(
@@ -51,12 +48,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     };
   }, [isHovered, product.images]);
 
-  // Handle wishlist toggle
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     if (!isLoggedIn) {
-      // Redirect to login if not logged in
       navigate("/products/:category");
       return;
     }
@@ -66,36 +61,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  // Navigate to product details
-  // const handleProductClick = () => {
-  //   navigate(`/product/${product.id}`);
-  // };
-
-  // In ProductCard.js, update the handleProductClick function
   const handleProductClick = () => {
     if (product.id && product.category) {
-      // Create a URL-friendly version of the product title
       const nameSlug = product.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
-      // Navigate using the expected route pattern with all required parameters
       navigate(
         `/product-details/${product.category.id}/${nameSlug}/${product.id}`
       );
     } else {
-      // Fallback if missing required data
       navigate(`/product/${product.id}`);
     }
-  };
-
-  // Get the image to display or use a placeholder
-  const getImageUrl = (index: number) => {
-    if (product.images && product.images.length > 0) {
-      return product.images[index];
-    }
-    return "/api/placeholder/400/500"; // Placeholder image
   };
 
   return (
@@ -121,11 +99,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             />
           ))
         ) : (
-          <img
-            className="card-media object-top"
-            src="/api/placeholder/400/500"
-            alt={product.title}
-          />
+          <img className="card-media object-top" src="#" alt={product.title} />
         )}
 
         <div className="indicator">

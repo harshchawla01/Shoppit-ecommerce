@@ -1,23 +1,37 @@
-import React from "react";
-import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../auth/AuthContext";
+import { useCallback } from "react";
 
 interface OrderSummaryProps {
-  totalMrpPrice: number;
   totalSellingPrice: number;
   discount: number;
   onCheckout: () => void;
 }
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({
-  totalMrpPrice,
+const OrderSummary = ({
   totalSellingPrice,
   discount,
   onCheckout,
-}) => {
-  // Calculate delivery fee (you could make this dynamic based on order value)
+}: OrderSummaryProps) => {
+  const navigate = useNavigate();
+  const { token } = useAuth();
+
   const deliveryFee = totalSellingPrice > 499 ? 0 : 40;
-  // Calculate final amount
   const finalAmount = totalSellingPrice + deliveryFee;
+
+  const handleCheckout = useCallback(() => {
+    onCheckout();
+    if (token) {
+      try {
+        navigate("/checkout");
+      } catch (error) {
+        console.error("Error during checkout:", error);
+      }
+    } else {
+      alert("Please log in to proceed with checkout");
+    }
+  }, [token, onCheckout]);
 
   return (
     <Paper elevation={2} sx={{ p: 3 }}>
@@ -28,21 +42,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
       <Stack spacing={2} sx={{ mt: 2 }}>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="body1" color="text.secondary">
-            Price ({totalMrpPrice > totalSellingPrice ? "MRP" : "Total"})
+            Price Total
           </Typography>
-          <Typography variant="body1">₹{totalMrpPrice}</Typography>
+          <Typography variant="body1">₹{totalSellingPrice}</Typography>
         </Stack>
-
-        {discount > 0 && (
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1" color="text.secondary">
-              Discount
-            </Typography>
-            <Typography variant="body1" color="success.main">
-              -₹{discount}
-            </Typography>
-          </Stack>
-        )}
 
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="body1" color="text.secondary">
@@ -80,7 +83,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         color="primary"
         fullWidth
         size="large"
-        onClick={onCheckout}
+        onClick={handleCheckout}
         sx={{ mt: 3 }}
       >
         Proceed to Checkout

@@ -1,31 +1,31 @@
-import React, { MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { teal } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../../../types/productTypes";
-import { useAppDispatch } from "../../../Redux/store";
+import { useAppDispatch } from "../../../redux/store";
 import CloseIcon from "@mui/icons-material/Close";
-import { addProductToWishlist } from "../../../Redux/Customer/WishlistSlice";
+import { removeProductFromWishlist } from "../../../redux/customer/wishlistSlice";
 import { useAuth } from "../../../auth/AuthContext";
 
 interface ProductCardProps {
   item: Product;
 }
 
-const WishlistProductCard: React.FC<ProductCardProps> = ({ item }) => {
+const WishlistProductCard = ({ item }: ProductCardProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { token } = useAuth();
-  // Function to handle removal from wishlist
   const handleRemoveFromWishlist = (e: MouseEvent) => {
     e.stopPropagation();
 
     if (item?.id && token) {
       console.log("token:", token);
-      dispatch(addProductToWishlist({ token: token!, productId: item.id }));
+      dispatch(
+        removeProductFromWishlist({ token: token!, productId: item.id })
+      );
     }
   };
 
-  // Function to navigate to product details page
   const navigateToProductDetails = () => {
     if (item.id && item.category?.categoryId) {
       navigate(

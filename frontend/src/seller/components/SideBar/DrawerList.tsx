@@ -1,11 +1,10 @@
-import DrawerList from "../../../components/drawerList/DrawerList";
+import DrawerList from "./drawerList/DrawerList";
 import { AccountBox } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 
 const menu = [
   {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Cart, CartItem } from "../../types/cartTypes";
-import { api } from "../../Config/Api";
+import { api } from "../../config/Api";
 import { RootState } from "../store";
 import { 
   sumCartItemMrpPrice, 
@@ -215,6 +215,7 @@ const cartSlice = createSlice({
 export default cartSlice.reducer;
 export const { resetCartState } = cartSlice.actions;
 
+// export const selectCartItem = (state: RootState) => 
 export const selectCart = (state: RootState) => state.cart.cart;
 export const selectCartLoading = (state: RootState) => state.cart.loading;
 export const selectCartError = (state: RootState) => state.cart.error;

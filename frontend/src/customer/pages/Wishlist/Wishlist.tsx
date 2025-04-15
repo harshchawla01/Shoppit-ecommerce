@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
-import { getWishlistByUserId } from "../../../Redux/Customer/WishlistSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getWishlistByUserId } from "../../../redux/customer/wishlistSlice";
 import WishlistProductCard from "./WishlistProductCard";
 import { useAuth } from "../../../auth/AuthContext";
 
@@ -9,7 +9,6 @@ const Wishlist = () => {
   const { wishlist } = useAppSelector((store) => store);
   const { isLoggedIn, token } = useAuth();
 
-  // Fetch wishlist when component mounts
   useEffect(() => {
     if (isLoggedIn && token) {
       dispatch(getWishlistByUserId(token));

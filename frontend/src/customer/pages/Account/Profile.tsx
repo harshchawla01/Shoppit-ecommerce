@@ -1,106 +1,109 @@
-import { Alert, Divider, Snackbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-// import Order from "./Order";
-// import UserDetails from "./UserDetails";
-// import OrderDetails from "./OrderDetails";
+import { useAuth } from "../../../auth/AuthContext";
+import OrderHistory from "../Order/OrderHistory";
 import Wishlist from "../Wishlist/Wishlist";
-// import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
-// import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 
-const menu = [
-  { name: "Wishlist", path: "/account/wishlist" },
-  // { name: "Orders", path: "/account/orders" },
-  // { name: "Profile", path: "/account/profile" },
-  // { name: "Logout", path: "/" },
-];
 const Profile = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  // const dispatch = useAppDispatch()
-  // const { user,orders } = useAppSelector(store => store)
-  const [snackbarOpen, setOpenSnackbar] = useState(false);
+  const navigate = useNavigate();
+  const { userInfo } = useAuth();
 
-  // const handleLogout = () => {
-  //     dispatch(performLogout())
-  //     navigate("/")
-  // }
+  // Determine active tab based on current path
+  const currentTab = location.pathname.includes("/account/orders")
+    ? 1
+    : location.pathname.includes("/account/wishlist")
+    ? 2
+    : 0;
 
-  const handleClick = (item: any) => {
-    // if (item.name === "Logout") {
-    //     handleLogout()
-    // }
-    // else
-    navigate(`${item.path}`);
+  // event not needed
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    switch (newValue) {
+      case 0:
+        navigate("/account/profile");
+        break;
+      case 1:
+        navigate("/account/orders");
+        break;
+      case 2:
+        navigate("/account/wishlist");
+        break;
+    }
   };
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
 
-  // useEffect(() => {
-  //     if (user.profileUpdated || orders.orderCanceled || user.error) {
-  //         setOpenSnackbar(true);
-  //     }
-  // }, [user.profileUpdated,orders.orderCanceled]);
+  // Basic profile display
+  const ProfileInfo = () => (
+    <Paper elevation={2} sx={{ p: 3 }}>
+      <Typography variant="h5" gutterBottom>
+        Profile Information
+      </Typography>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Name
+          </Typography>
+          <Typography variant="body1">
+            {userInfo?.firstName} {userInfo?.lastName}
+          </Typography>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Email
+          </Typography>
+          <Typography variant="body1">{userInfo?.email}</Typography>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Username
+          </Typography>
+          <Typography variant="body1">{userInfo?.username}</Typography>
+        </Grid>
+        {userInfo?.phone && (
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Phone
+            </Typography>
+            <Typography variant="body1">{userInfo.phone}</Typography>
+          </Grid>
+        )}
+      </Grid>
+    </Paper>
+  );
+
   return (
-    <div className="px-5 lg:px-52 min-h-screen mt-10 ">
-      <div>
-        <h1 className="text-xl font-bold pb-5">
-          {/* {user.user?.fullName} */}
-          Harsh
-        </h1>
-      </div>
-      <Divider />
-      <div className="grid grid-cols-1 lg:grid-cols-3 lg:min-h-[78vh]">
-        <div className="col-span-1 lg:border-r lg:pr-5 py-5 h-full  flex flex-row flex-wrap lg:flex-col gap-3">
-          {menu.map((item, index) => (
-            <div
-              // onClick={() => handleClick(item)}
-              className={`${menu.length - 1 !== index ? "border-b" : ""} ${
-                item.path == location.pathname
-                  ? "bg-primary-color text-white"
-                  : ""
-              } px-5 py-3 rounded-md hover:bg-teal-500 hover:text-white cursor-pointer `}
-            >
-              <p>{item.name}</p>
-            </div>
-          ))}
-        </div>
-        <div className="lg:col-span-2 lg:pl-5 py-5">
-          <Routes>
-            {/* <Route path="/" element={<UserDetails />} /> */}
-            <Route path="/wishlist" element={<Wishlist />} />
-            {/* <Route path="/orders" element={<Order />} /> */}
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        My Account
+      </Typography>
 
-            {/* <Route
-              path="/orders/:orderId/:orderItemId"
-              element={<OrderDetails />}
-            /> */}
-            {/* <Route path="/profile" element={<UserDetails />} /> */}
-            {/* addresses */}
-          </Routes>
-        </div>
-      </div>
-      {/* <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-        //   severity={user.error ? "error" : "success"}
-          variant="filled"
-          sx={{ width: "100%" }}
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
+        <Tabs
+          value={currentTab}
+          onChange={handleTabChange}
+          aria-label="account tabs"
         >
-          {user.error
-            ? user.error
-            : orders.orderCanceled
-            ? "order canceled successfully"
-            : "success"}
-        </Alert>
-      </Snackbar> */}
-    </div>
+          <Tab label="Profile" />
+          <Tab label="Orders" />
+          <Tab label="Wishlist" />
+        </Tabs>
+      </Box>
+
+      <Routes>
+        <Route path="/" element={<ProfileInfo />} />
+        <Route path="/profile" element={<ProfileInfo />} />
+        <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+      </Routes>
+    </Container>
   );
 };
 

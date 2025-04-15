@@ -12,13 +12,13 @@ import React, { useState, useEffect } from "react";
 import { colors } from "../../../assets/data/Filter/color";
 import { useSearchParams } from "react-router-dom";
 import { price } from "../../../assets/data/Filter/price";
-import { discount } from "../../../assets/data/Filter/discount";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   getAllProducts,
+  ProductFilters,
   resetFilters,
   setFilters,
-} from "../../../Redux/Customer/ProductSlice";
+} from "../../../redux/customer/productSlice";
 
 const FilterSection = () => {
   const dispatch = useAppDispatch();
@@ -26,39 +26,30 @@ const FilterSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [expandColorSection, setExpandColorSection] = useState(false);
 
-  // Initialize local state with URL params or Redux state
   const [selectedColor, setSelectedColor] = useState(
     searchParams.get("color") || filters.color || ""
   );
   const [selectedPrice, setSelectedPrice] = useState(
     searchParams.get("price") || filters.minPrice?.toString() || ""
   );
-  const [selectedDiscount, setSelectedDiscount] = useState(
-    searchParams.get("discount") || filters.minDiscount?.toString() || ""
-  );
 
-  // Sync local state with Redux when filters change
+  // syncing local state with redux
   useEffect(() => {
     console.log(filters);
     setSelectedColor(filters.color || "");
     setSelectedPrice(filters.minPrice?.toString() || "");
-    setSelectedDiscount(filters.minDiscount?.toString() || "");
   }, [filters]);
 
   const handleExpandColorSection = () => {
     setExpandColorSection(!expandColorSection);
   };
 
-  // Update filter params and fetch products
   const updateFilterParams = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     console.log(e);
-    // Update the appropriate state based on filter type
     if (name === "color") setSelectedColor(value);
     if (name === "price") setSelectedPrice(value);
-    if (name === "discount") setSelectedDiscount(value);
 
-    // Update URL params
     if (value) {
       searchParams.set(name, value);
     } else {
@@ -66,13 +57,12 @@ const FilterSection = () => {
     }
     setSearchParams(searchParams);
 
-    // Create filter object for Redux
-    let newFilter: any = {};
+    // for redux
+    let newFilter: ProductFilters = {};
 
     if (name === "color") {
       newFilter = { color: value || undefined };
     } else if (name === "price") {
-      // Parse price range
       const priceObj = price.find((p) => p.value === value);
       console.log(priceObj);
       if (priceObj) {
@@ -81,36 +71,26 @@ const FilterSection = () => {
 
         newFilter = {
           minPrice: min || 0,
-          maxPrice: max || 9999999,
+          maxPrice: max || 9999999, // Assumed max price
         };
         console.log(newFilter);
       }
-    } else if (name === "discount") {
-      newFilter = { minDiscount: parseInt(value) || undefined };
     }
-
-    // Reset to first page when filter changes
     newFilter.pageNumber = 0;
 
-    // Update Redux filters and fetch products
     dispatch(setFilters(newFilter));
     dispatch(getAllProducts(newFilter));
   };
 
-  // Clear all filters
   const clearAllFilters = () => {
-    // Reset local state
     setSelectedColor("");
     setSelectedPrice("");
-    setSelectedDiscount("");
 
-    // Clear URL params
     searchParams.delete("color");
     searchParams.delete("price");
-    searchParams.delete("discount");
+    searchParams.delete("query");
     setSearchParams(searchParams);
 
-    // Reset Redux filters and fetch products
     dispatch(resetFilters());
     dispatch(getAllProducts());
   };
@@ -129,7 +109,7 @@ const FilterSection = () => {
       </div>
       <Divider />
 
-      {/* Color filter section */}
+      {/* Colors */}
       <section className="px-4">
         <FormControl sx={{ zIndex: 0 }}>
           <FormLabel
@@ -184,7 +164,7 @@ const FilterSection = () => {
       </section>
       <Divider />
 
-      {/* Price filter section */}
+      {/* Price filter */}
       <section className="px-4">
         <FormControl>
           <FormLabel
@@ -218,39 +198,6 @@ const FilterSection = () => {
         </FormControl>
       </section>
       <Divider />
-
-      {/* Discount filter section */}
-      <section className="px-4">
-        <FormControl>
-          <FormLabel
-            sx={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              pb: "14px",
-              color: teal[600],
-            }}
-            className="text-2xl font-semibold"
-            id="discount"
-          >
-            Discount
-          </FormLabel>
-          <RadioGroup
-            value={selectedDiscount}
-            name="discount"
-            onChange={updateFilterParams}
-            aria-labelledby="discount"
-          >
-            {discount.map((item) => (
-              <FormControlLabel
-                key={item.name}
-                value={item.value}
-                control={<Radio size="small" />}
-                label={item.name}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
-      </section>
     </div>
   );
 };

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   fetchUserCart,
   deleteCartItem,
@@ -9,7 +9,7 @@ import {
   selectCart,
   selectCartLoading,
   selectCartError,
-} from "../../../Redux/Customer/CartSlice";
+} from "../../../redux/customer/cartSlice";
 import {
   Box,
   Button,
@@ -38,21 +38,29 @@ const Cart = () => {
     }
   }, [dispatch, token]);
 
+  console.log("Cart:", cart);
+
   const handleRemoveItem = (cartItemId: number) => {
     if (token) {
       dispatch(deleteCartItem({ token, cartItemId }));
+      console.log("Removed cart item with id", cartItemId);
     }
   };
 
-  const handleUpdateQuantity = (cartItemId: number, quantity: number) => {
+  const handleUpdateQuantity = (
+    cartItemId: number,
+    index: number,
+    quantity: number
+  ) => {
     if (token && quantity > 0) {
       dispatch(
         updateCartItem({
           token,
           cartItemId,
-          cartItem: { quantity },
+          cartItem: { ...cart?.cartItems[index], quantity },
         })
       );
+      console.log("Logging cart from Cart.tsx", cart);
     }
   };
 
@@ -94,7 +102,7 @@ const Cart = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/products/all")}
           >
             Continue Shopping
           </Button>
@@ -113,28 +121,31 @@ const Cart = () => {
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Paper elevation={2}>
-            {cart.cartItems.map((item) => (
-              <Box key={item.id}>
-                <CartItem
-                  item={item}
-                  onRemove={() => handleRemoveItem(item.id)}
-                  onUpdateQuantity={(newQuantity) =>
-                    handleUpdateQuantity(item.id, newQuantity)
-                  }
-                />
-                {cart.cartItems.indexOf(item) < cart.cartItems.length - 1 && (
-                  <Divider />
-                )}
-              </Box>
-            ))}
+            {cart.cartItems.map((item, index) => {
+              console.log("Cart Item:", item);
+              console.log("Cart Item ID:", item.id);
+              return (
+                <Box key={item.id}>
+                  <CartItem
+                    item={item}
+                    onRemove={() => handleRemoveItem(item.id)}
+                    onUpdateQuantity={(newQuantity) =>
+                      handleUpdateQuantity(item.id, index, newQuantity)
+                    }
+                  />
+                  {cart.cartItems.indexOf(item) < cart.cartItems.length - 1 && (
+                    <Divider />
+                  )}
+                </Box>
+              );
+            })}
           </Paper>
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
           <OrderSummary
-            totalMrpPrice={cart.totalMrpPrice}
             totalSellingPrice={cart.totalSellingPrice}
-            discount={cart.discount}
+            discount={cart.totalMrpPrice - cart.totalSellingPrice}
             onCheckout={handleCheckout}
           />
         </Grid>

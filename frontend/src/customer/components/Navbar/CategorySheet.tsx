@@ -24,11 +24,7 @@ const categoryThree: { [key: string]: any[] } = {
   home_furniture: furnitureLevelThree,
 };
 
-const CategorySheet = ({
-  selectedCategory,
-  // toggleDrawer,
-  setShowSheet,
-}: any) => {
+const CategorySheet = ({ selectedCategory, setShowSheet }: any) => {
   const navigate = useNavigate();
 
   const childCategory = (category: any, parentCategoryId: any) => {
@@ -38,9 +34,6 @@ const CategorySheet = ({
     });
   };
   const handleCategoryClick = (category: string) => {
-    // if (toggleDrawer) {
-    //   toggleDrawer(false)();
-    // }
     if (setShowSheet) {
       setShowSheet(false);
     }

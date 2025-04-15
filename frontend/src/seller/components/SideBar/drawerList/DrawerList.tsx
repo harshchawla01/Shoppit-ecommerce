@@ -3,7 +3,7 @@ import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../../../auth/AuthContext";
 
 export interface Menu {
   name: string;
@@ -24,7 +24,6 @@ const DrawerList = ({ toggleDrawer, menu, menu2 }: DrawerListProps) => {
   const { logout } = useAuth();
 
   const handleClick = (item: Menu) => () => {
-    // Handle special cases
     if (item.name === "Logout") {
       logout();
       navigate("/");
@@ -32,7 +31,6 @@ const DrawerList = ({ toggleDrawer, menu, menu2 }: DrawerListProps) => {
       navigate(item.path);
     }
 
-    // Close the drawer if toggleDrawer function exists
     if (toggleDrawer) {
       toggleDrawer(false)();
     }

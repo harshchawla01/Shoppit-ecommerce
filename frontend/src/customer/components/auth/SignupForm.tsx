@@ -11,18 +11,17 @@ import {
   Alert,
 } from "@mui/material";
 import { useAuth } from "../../../auth/AuthContext";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   completeSignup,
   resetAuthState,
-} from "../../../Redux/Customer/AuthSlice";
+} from "../../../redux/customer/authSlice";
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { login, isLoggedIn } = useAuth();
 
-  // Get the auth state from Redux
   const { isLoading, error, signupSuccess } = useAppSelector(
     (state) => state.auth
   );
@@ -38,7 +37,6 @@ const SignupForm: React.FC = () => {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Reset auth state when component unmounts
   useEffect(() => {
     return () => {
       dispatch(resetAuthState());
@@ -56,9 +54,8 @@ const SignupForm: React.FC = () => {
   useEffect(() => {
     if (signupSuccess) {
       console.log("Signup successful, redirecting to login");
-      // Short delay before redirecting to login
       const timer = setTimeout(() => {
-        login(); // This calls the Keycloak login function from AuthContext
+        login();
       }, 1500);
 
       return () => clearTimeout(timer);

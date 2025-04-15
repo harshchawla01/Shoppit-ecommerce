@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { api } from "../../Config/Api";
+import { api } from "../../config/Api";
 import { Product } from "../../types/productTypes";
 
 const API_URL = "api/sellers/product";
