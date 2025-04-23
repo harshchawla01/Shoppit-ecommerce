@@ -111,7 +111,7 @@ public class SecurityConfig {
         http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/signup", "/users/profile", "/users", "/products/**", "/roles/assign-role/user/**").permitAll()
+                        .requestMatchers("/auth/signup", "/users/profile", "/users/**", "/products/**", "/roles/assign-role/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

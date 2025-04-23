@@ -8,9 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Data
 @RequiredArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"cart"})
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

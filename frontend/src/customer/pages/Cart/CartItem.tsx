@@ -1,9 +1,6 @@
-import React from "react";
 import {
   Box,
   Button,
-  Card,
-  Divider,
   Grid,
   IconButton,
   Stack,
@@ -21,8 +18,10 @@ interface CartItemProps {
   onUpdateQuantity: (quantity: number) => void;
 }
 
+
 const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
   const theme = useTheme();
+  console.log("Prices and discounts", item.sellingPrice, item.mrpPrice);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -92,7 +91,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
           >
             <IconButton
               size="small"
-              onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+              onClick={() =>
                 onUpdateQuantity(item.quantity - 1)
               }
               disabled={item.quantity <= 1}

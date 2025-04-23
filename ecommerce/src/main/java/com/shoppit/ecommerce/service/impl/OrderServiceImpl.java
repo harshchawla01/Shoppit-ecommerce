@@ -48,13 +48,13 @@ public class OrderServiceImpl implements OrderService {
             List<CartItem> cartItems = entry.getValue();
 
 //          Total of items per List
-            int totalOrderPrice = cartItems.stream().mapToInt(
-                    CartItem::getSellingPrice
-            ).sum();
+            int totalOrderPrice = cartItems.stream()
+                    .mapToInt(item -> item.getSellingPrice() * item.getQuantity())
+                    .sum();
 
-            int totalMrpPrice = cartItems.stream().mapToInt(
-                    CartItem::getMrpPrice
-            ).sum();
+            int totalMrpPrice = cartItems.stream()
+                    .mapToInt(item -> item.getMrpPrice() * item.getQuantity())
+                    .sum();
 
 //          Total items per List
             int totalItems = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
@@ -76,8 +76,8 @@ public class OrderServiceImpl implements OrderService {
             for(CartItem cartItem : cartItems) {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrder(savedOrder);
-                orderItem.setMrpPrice(cartItem.getMrpPrice());
-                orderItem.setSellingPrice(cartItem.getSellingPrice());
+                orderItem.setMrpPrice(cartItem.getMrpPrice() * cartItem.getQuantity());
+                orderItem.setSellingPrice(cartItem.getSellingPrice() * cartItem.getQuantity());
                 orderItem.setProduct(cartItem.getProduct());
                 orderItem.setQuantity(cartItem.getQuantity());
                 orderItem.setSize(cartItem.getSize());

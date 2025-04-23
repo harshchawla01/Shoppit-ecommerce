@@ -88,13 +88,6 @@ public class OrderController {
         User user = userService.findUserByJwtToken(jwt);
         Order order = orderService.cancelOrder(orderId, user);
 
-//        Seller seller = sellerService.getSellerById(order.getSellerId());
-//        SellerReport report=sellerReportService.getSellerReport(seller);
-
-//        report.setCanceledOrders(report.getCanceledOrders()+1);
-//        report.setTotalRefunds(report.getTotalRefunds()+order.getTotalSellingPrice());
-//        sellerReportService.updateSellerReport(report);
-
         return ResponseEntity.ok(order);
     }
 }

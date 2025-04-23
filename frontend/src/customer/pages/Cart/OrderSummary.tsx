@@ -4,12 +4,14 @@ import { useAuth } from "../../../auth/AuthContext";
 import { useCallback } from "react";
 
 interface OrderSummaryProps {
+  // totalMrpPrice: number;
   totalSellingPrice: number;
   discount: number;
   onCheckout: () => void;
 }
 
 const OrderSummary = ({
+  // totalMrpPrice,
   totalSellingPrice,
   discount,
   onCheckout,
@@ -17,7 +19,12 @@ const OrderSummary = ({
   const navigate = useNavigate();
   const { token } = useAuth();
 
+  // console.log("totalSellingPrice", totalSellingPrice);
+
   const deliveryFee = totalSellingPrice > 499 ? 0 : 40;
+  
+  // console.log("Delivery Fee:", deliveryFee);
+  
   const finalAmount = totalSellingPrice + deliveryFee;
 
   const handleCheckout = useCallback(() => {

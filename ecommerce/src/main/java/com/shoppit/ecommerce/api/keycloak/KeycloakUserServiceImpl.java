@@ -55,6 +55,10 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
 
         Response response = usersResource.create(user);
 
+        System.out.println("Response status for keycloak's create user api " + response.getStatus());
+
+//        System.out.println("Response: " + response.readEntity(String.class));
+
         if(Objects.equals(201, response.getStatus())) {
             // Extract the userId from the location header
             String locationHeader = response.getHeaderString("Location");

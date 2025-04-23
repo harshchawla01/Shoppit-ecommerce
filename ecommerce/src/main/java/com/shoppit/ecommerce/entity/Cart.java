@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @RequiredArgsConstructor
+@EqualsAndHashCode(exclude = {"cartItems"})
 public class Cart {
 
     @Id

@@ -159,7 +159,7 @@ const OrderHistory = () => {
                     <TableCell>Product</TableCell>
                     <TableCell>Size</TableCell>
                     <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Price per piece</TableCell>
+                    <TableCell align="right">Price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

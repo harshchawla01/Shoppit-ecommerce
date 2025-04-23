@@ -1,5 +1,6 @@
 package com.shoppit.ecommerce.service.impl;
 
+import com.shoppit.ecommerce.entity.Cart;
 import com.shoppit.ecommerce.entity.CartItem;
 import com.shoppit.ecommerce.entity.User;
 import com.shoppit.ecommerce.exception.CartItemException;
@@ -29,12 +30,27 @@ public class CartItemServiceImpl implements CartItemService {
         throw new CartItemException("You can't update this cart item");
     }
 
+//    @Override
+//    public void removeCartItem(Long userId, Long cartItemId) throws CartItemException, UserException {
+//
+//        CartItem cartItem = findCartItemById(cartItemId);
+//        User cartItemUser = cartItem.getCart().getUser();
+//        if(cartItemUser.getId().equals(userId)){
+//            cartItemRepository.delete(cartItem);
+//        }
+//        else throw new CartItemException("You can't delete this cart item");
+//    }
+
     @Override
     public void removeCartItem(Long userId, Long cartItemId) throws CartItemException, UserException {
-
         CartItem cartItem = findCartItemById(cartItemId);
-        User cartItemUser = cartItem.getCart().getUser();
+        Cart cart = cartItem.getCart();
+        User cartItemUser = cart.getUser();
+
         if(cartItemUser.getId().equals(userId)){
+            // Remove from both sides of the relationship
+            cart.getCartItems().remove(cartItem);
+            cartItem.setCart(null);
             cartItemRepository.delete(cartItem);
         }
         else throw new CartItemException("You can't delete this cart item");

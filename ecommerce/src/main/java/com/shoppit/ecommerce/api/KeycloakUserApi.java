@@ -19,11 +19,10 @@ public class KeycloakUserApi {
     @Autowired
     private KeycloakUserService keycloakUserService;
 
-//    @PostMapping("/create")
-//    public ResponseEntity<?> createUser(@RequestBody SignupRequest req) {
-//        keycloakUserService.createUser(req);
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestBody SignupRequest req) {
+        return keycloakUserService.createUser(req);
+    }
 
     @GetMapping
     public UserRepresentation getUser(Principal principal) {

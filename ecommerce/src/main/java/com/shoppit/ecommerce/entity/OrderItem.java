@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Data
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class OrderItem {

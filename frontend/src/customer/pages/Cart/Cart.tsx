@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
@@ -144,6 +144,7 @@ const Cart = () => {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <OrderSummary
+            // totalMrpPrice={cart.totalMrpPrice}
             totalSellingPrice={cart.totalSellingPrice}
             discount={cart.totalMrpPrice - cart.totalSellingPrice}
             onCheckout={handleCheckout}

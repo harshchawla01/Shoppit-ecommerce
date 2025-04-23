@@ -60,8 +60,8 @@ public class CartController {
                 req.getSize(),
                 req.getQuantity());
 
-        ApiResponse res = new ApiResponse();
-        res.setMessage("Item added to cart successfully");
+//        ApiResponse res = new ApiResponse();
+//        res.setMessage("Item added to cart successfully");
 
         return new ResponseEntity<>(item,HttpStatus.ACCEPTED);
 
